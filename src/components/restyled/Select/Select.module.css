@@ -1,0 +1,24 @@
+.select {
+  font-family: 'Geist', sans-serif;
+}
+
+.select :global(.ant-select-selector) {
+  border: 1px solid #e5e7eb !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Geist', sans-serif;
+}
+
+.select :global(.ant-select-selector:hover) {
+  border-color: #0070f3 !important;
+}
+
+.select :global(.ant-select-focused .ant-select-selector),
+.select :global(.ant-select-selector:focus) {
+  border-color: #0070f3 !important;
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1) !important;
+}
+
+.select :global(.ant-select-arrow) {
+  color: #6b7280;
+}
+

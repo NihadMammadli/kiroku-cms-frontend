@@ -1,0 +1,30 @@
+.checkbox {
+  font-family: 'Geist', sans-serif;
+}
+
+.checkbox :global(.ant-checkbox-inner) {
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.checkbox :global(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #0070f3;
+  border-color: #0070f3;
+}
+
+.checkbox :global(.ant-checkbox-wrapper:hover .ant-checkbox-inner),
+.checkbox :global(.ant-checkbox:hover .ant-checkbox-inner) {
+  border-color: #0070f3;
+}
+
+.checkbox :global(.ant-checkbox + span) {
+  font-family: 'Geist', sans-serif;
+  color: #374151;
+  font-size: 14px;
+}
+
+.checkboxGroup {
+  font-family: 'Geist', sans-serif;
+}
+

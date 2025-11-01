@@ -1,0 +1,53 @@
+.table {
+  font-family: 'Geist', sans-serif;
+}
+
+.table :global(.ant-table) {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.table :global(.ant-table-thead > tr > th) {
+  background: #fafafa;
+  color: #171717;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.table :global(.ant-table-tbody > tr > td) {
+  font-size: 14px;
+  color: #374151;
+}
+
+.table :global(.ant-table-tbody > tr:hover > td) {
+  background: #f9fafb;
+}
+
+.table :global(.ant-table-cell) {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.table :global(.ant-pagination) {
+  font-family: 'Geist', sans-serif;
+  margin-top: 24px;
+}
+
+.table :global(.ant-pagination-item) {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+
+.table :global(.ant-pagination-item-active) {
+  background: #0070f3;
+  border-color: #0070f3;
+}
+
+.table :global(.ant-pagination-item-active a) {
+  color: #ffffff;
+}
+

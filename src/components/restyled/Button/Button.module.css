@@ -1,0 +1,25 @@
+.button {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.primary {
+  background: linear-gradient(135deg, #0070f3 0%, #0051cc 100%);
+}
+
+.primary:hover {
+  background: linear-gradient(135deg, #0051cc 0%, #003d99 100%);
+}
+
