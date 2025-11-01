@@ -1,0 +1,287 @@
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--background);
+  padding: 24px;
+  position: relative;
+
+  @media (min-width: 768px) {
+    padding: 32px;
+  }
+}
+
+.loginWrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  animation: slideInUp 0.5s ease-out;
+
+  @media (min-width: 768px) {
+    max-width: 450px;
+  }
+}
+
+.loginCard {
+  width: 100%;
+  background: var(--background-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+
+  :global(.ant-card-head) {
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    padding: 24px 24px 20px;
+
+    @media (min-width: 768px) {
+      padding: 32px 32px 24px;
+    }
+  }
+
+  :global(.ant-card-body) {
+    padding: 24px;
+
+    @media (min-width: 768px) {
+      padding: 32px;
+    }
+  }
+}
+
+.loginTitle {
+  text-align: center;
+  margin: 0;
+}
+
+.logoSection {
+  margin-bottom: 12px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 16px;
+  }
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+
+  @media (min-width: 768px) {
+    font-size: 32px;
+  }
+}
+
+.welcomeText {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+
+  @media (min-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+.loginForm {
+  margin-top: 0;
+}
+
+.formItem {
+  margin-bottom: 20px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 24px;
+  }
+
+  :global(.ant-form-item-label) {
+    padding: 0;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+
+      @media (min-width: 768px) {
+        font-size: 15px;
+      }
+    }
+  }
+
+  :global(.ant-form-item-explain-error) {
+    font-size: 13px;
+    color: var(--error);
+    font-weight: 500;
+    margin-top: 6px;
+
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
+  }
+}
+
+.submitItem {
+  margin-bottom: 0 !important;
+  margin-top: 28px;
+
+  @media (min-width: 768px) {
+    margin-top: 32px;
+  }
+}
+
+.formInput {
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--background-secondary);
+  color: var(--text);
+  font-size: 14px;
+  height: 44px;
+  transition: all 0.2s ease;
+
+  @media (min-width: 768px) {
+    font-size: 15px;
+    height: 48px;
+  }
+
+  &:hover {
+    border-color: var(--border-secondary);
+  }
+
+  &:focus,
+  &:global(.ant-input-focused) {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+    font-size: 14px;
+
+    @media (min-width: 768px) {
+      font-size: 15px;
+    }
+  }
+}
+
+.inputIcon {
+  color: var(--text-tertiary);
+  font-size: 16px;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+.formButton {
+  width: 100%;
+  height: 44px;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  color: var(--background);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  letter-spacing: -0.01em;
+
+  @media (min-width: 768px) {
+    height: 48px;
+    font-size: 15px;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:focus:not(:disabled) {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.2);
+  }
+
+  &:global(.ant-btn-loading) {
+    background: var(--primary);
+    opacity: 0.7;
+  }
+}
+
+// Animations
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 767px) {
+  .loginContainer {
+    padding: 16px;
+  }
+
+  .loginCard {
+    :global(.ant-card-head) {
+      padding: 20px 20px 16px;
+    }
+
+    :global(.ant-card-body) {
+      padding: 20px;
+    }
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .welcomeText {
+    font-size: 13px;
+  }
+
+  .formItem {
+    margin-bottom: 16px;
+  }
+
+  .submitItem {
+    margin-top: 24px;
+  }
+}
+
+// Landscape orientation adjustments for mobile
+@media (max-width: 767px) and (orientation: landscape) {
+  .loginContainer {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .loginCard {
+    :global(.ant-card-head) {
+      padding: 16px;
+    }
+
+    :global(.ant-card-body) {
+      padding: 16px;
+    }
+  }
+
+  .formItem {
+    margin-bottom: 12px;
+  }
+
+  .submitItem {
+    margin-top: 16px;
+  }
+}
