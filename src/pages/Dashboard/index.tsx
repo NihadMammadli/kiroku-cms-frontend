@@ -124,16 +124,6 @@ const Dashboard: React.FC = () => {
       )}
 
       <Row gutter={16}>
-        <Col xs={24} sm={12} md={8}>
-          <Card>
-            <Statistic
-              title="İstifadəçilər"
-              value={user?.branches.length || 0}
-              prefix={<UserOutlined />}
-              valueStyle={{ color: '#1677ff' }}
-            />
-          </Card>
-        </Col>
       </Row>
     </div>
   );
