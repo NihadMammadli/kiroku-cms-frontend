@@ -82,7 +82,8 @@ import { Button } from '@/components/restyled';
 All components use:
 
 - **Font**: Geist (loaded globally)
-- **Primary Color**: #0070f3
+- **Primary Color**: #667eea
+- **Primary Gradient**: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 - **Border Radius**: 8px (buttons, inputs), 12px (cards, tables)
 - **Transitions**: cubic-bezier(0.4, 0, 0.2, 1)
 

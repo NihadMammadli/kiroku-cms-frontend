@@ -283,7 +283,7 @@ const Dashboard: React.FC = () => {
                   title="Tələbələr"
                   value={statistics.total_students || 0}
                   prefix={<TeamOutlined />}
-                  valueStyle={{ color: '#1890ff' }}
+                  valueStyle={{ color: '#667eea' }}
                 />
               </Card>
             </Col>

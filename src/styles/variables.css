@@ -1,11 +1,12 @@
 /* CSS Variables for consistent theming */
 :root {
   /* Colors */
-  --color-primary: #1890ff;
+  --color-primary: #667eea;
+  --color-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --color-success: #52c41a;
   --color-warning: #faad14;
   --color-error: #ff4d4f;
-  --color-info: #1890ff;
+  --color-info: #667eea;
   
   /* Text Colors */
   --color-text-primary: #333;

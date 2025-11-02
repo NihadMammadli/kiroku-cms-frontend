@@ -3,11 +3,11 @@ import type { ThemeConfig } from 'antd';
 export const theme: ThemeConfig = {
   token: {
     // Colors
-    colorPrimary: '#0070f3',
+    colorPrimary: '#667eea',
     colorSuccess: '#10b981',
     colorWarning: '#f59e0b',
     colorError: '#ef4444',
-    colorInfo: '#3b82f6',
+    colorInfo: '#667eea',
     colorTextBase: '#171717',
     colorBgBase: '#ffffff',
 

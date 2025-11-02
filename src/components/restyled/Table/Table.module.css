@@ -43,8 +43,8 @@
 }
 
 .table :global(.ant-pagination-item-active) {
-  background: #0070f3;
-  border-color: #0070f3;
+  background: #667eea;
+  border-color: #667eea;
 }
 
 .table :global(.ant-pagination-item-active a) {

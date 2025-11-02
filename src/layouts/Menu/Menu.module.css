@@ -14,7 +14,10 @@
   padding: 24px 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  margin-bottom: 16px;
+  margin: 16px;
+  margin-top: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .closeButton {
@@ -75,11 +78,11 @@
 }
 
 .menu {
-  border: none;
+  border: none !important;
+  border-inline-end: none !important;
 }
 
 .bottomMenu {
-  border-top: 1px solid #f0f0f0;
   padding-top: 8px;
   margin-top: auto;
 }
