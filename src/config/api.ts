@@ -34,7 +34,7 @@ const fetchCSRFToken = async (): Promise<string> => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL || '/api'}/auth/csrf/`,
         {
-        withCredentials: true,
+          withCredentials: true,
         }
       );
       const token = response.data.csrf_token;
@@ -92,14 +92,122 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      // window.location.href = '/login';
+    const originalRequest = error.config;
+
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network error:', error.message);
+      return Promise.reject({
+        message: 'Şəbəkə xətası. İnternet bağlantınızı yoxlayın.',
+        type: 'network',
+        originalError: error,
+      });
     }
-    return Promise.reject(error);
+
+    const { status, data } = error.response;
+
+    // Handle CSRF token errors with retry
+    if (
+      status === 403 &&
+      data?.detail?.includes('CSRF') &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      try {
+        // Clear cached CSRF token and fetch a new one
+        csrfToken = null;
+        const newToken = await fetchCSRFToken();
+        originalRequest.headers['X-CSRFToken'] = newToken;
+        return api(originalRequest);
+      } catch (csrfError) {
+        console.error('CSRF token refresh failed:', csrfError);
+      }
+    }
+
+    // Handle authentication errors
+    if (status === 401) {
+      // Clear any cached auth data
+      csrfToken = null;
+
+      // Don't redirect if already on login/landing page
+      const currentPath = window.location.pathname;
+      if (!['/login', '/landing', '/'].includes(currentPath)) {
+        console.warn('Unauthorized access - redirecting to login');
+        window.location.href = '/login';
+      }
+
+      return Promise.reject({
+        message: 'Giriş müddəti bitib. Zəhmət olmasa yenidən daxil olun.',
+        type: 'authentication',
+        status,
+        originalError: error,
+      });
+    }
+
+    // Handle forbidden errors
+    if (status === 403) {
+      return Promise.reject({
+        message:
+          data?.detail || 'Bu əməliyyatı yerinə yetirmək üçün icazəniz yoxdur.',
+        type: 'authorization',
+        status,
+        originalError: error,
+      });
+    }
+
+    // Handle not found errors
+    if (status === 404) {
+      return Promise.reject({
+        message: data?.detail || 'Axtarılan məlumat tapılmadı.',
+        type: 'not_found',
+        status,
+        originalError: error,
+      });
+    }
+
+    // Handle validation errors
+    if (status === 400) {
+      return Promise.reject({
+        message: data?.detail || 'Göndərilən məlumatlar yanlışdır.',
+        type: 'validation',
+        status,
+        data: data,
+        originalError: error,
+      });
+    }
+
+    // Handle server errors
+    if (status >= 500) {
+      return Promise.reject({
+        message:
+          data?.detail ||
+          'Server xətası baş verdi. Zəhmət olmasa sonra yenidən cəhd edin.',
+        type: 'server',
+        status,
+        originalError: error,
+      });
+    }
+
+    // Handle timeout errors
+    if (error.code === 'ECONNABORTED') {
+      return Promise.reject({
+        message: 'Sorğu vaxtı bitdi. Zəhmət olmasa yenidən cəhd edin.',
+        type: 'timeout',
+        originalError: error,
+      });
+    }
+
+    // Handle any other errors
+    return Promise.reject({
+      message: data?.detail || error.message || 'Gözlənilməz xəta baş verdi.',
+      type: 'unknown',
+      status,
+      originalError: error,
+    });
   }
 );
 

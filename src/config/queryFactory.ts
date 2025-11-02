@@ -4,6 +4,7 @@ import type {
   UseMutationOptions,
 } from '@tanstack/react-query';
 import type { MessageInstance } from 'antd/es/message/interface';
+import { getErrorMessage } from './apiErrors';
 
 interface QueryConfig<TData> {
   queryKey: (string | number | boolean | undefined)[];
@@ -15,10 +16,10 @@ interface MutationConfig<TData, TVariables> {
   mutationFn: (variables: TVariables) => Promise<TData>;
   invalidateKeys?: string[];
   onSuccessMessage?: string | ((data: TData) => string);
-  onErrorMessage?: string | ((error: Error) => string);
+  onErrorMessage?: string | ((error: unknown) => string);
   onSuccessCallback?: (data: TData) => void;
   options?: Omit<
-    UseMutationOptions<TData, Error, TVariables>,
+    UseMutationOptions<TData, unknown, TVariables>,
     'mutationFn' | 'onSuccess' | 'onError'
   >;
 }
@@ -47,7 +48,7 @@ export const createMutation = <TData, TVariables>({
   return (messageApi: MessageInstance) => {
     const queryClient = useQueryClient();
 
-    return useMutation<TData, Error, TVariables>({
+    return useMutation<TData, unknown, TVariables>({
       mutationFn,
       onSuccess: (data) => {
         if (onSuccessMessage) {
@@ -70,16 +71,23 @@ export const createMutation = <TData, TVariables>({
         }
       },
       onError: (error) => {
+        // Get error message from structured error or fallback
+        let errorMessage: string;
+
         if (onErrorMessage) {
-          const message =
+          errorMessage =
             typeof onErrorMessage === 'function'
               ? onErrorMessage(error)
               : onErrorMessage;
-          messageApi.open({
-            type: 'error',
-            content: message,
-          });
+        } else {
+          // Use the error message from our API interceptor
+          errorMessage = getErrorMessage(error);
         }
+
+        messageApi.open({
+          type: 'error',
+          content: errorMessage,
+        });
       },
       ...options,
     });
