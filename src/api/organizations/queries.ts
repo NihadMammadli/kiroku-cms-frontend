@@ -39,12 +39,15 @@ export const useOrganizationsQuery = (params?: OrganizationListParams) => {
   })();
 };
 
-export const useOrganizationQuery = () => {
+export const useOrganizationQuery = (
+  _params?: undefined,
+  additionalOptions?: { enabled?: boolean }
+) => {
   return createQuery<Organization>({
     queryKey: ['organizations', 'detail'],
     queryFn: () => fetchOrganization(),
     options: {
-      enabled: true,
+      enabled: additionalOptions?.enabled ?? true,
     },
   })();
 };
@@ -56,12 +59,15 @@ export const useOrganizationBranchesQuery = () => {
   })();
 };
 
-export const useOrganizationStatisticsQuery = () => {
+export const useOrganizationStatisticsQuery = (
+  _params?: undefined,
+  additionalOptions?: { enabled?: boolean }
+) => {
   return createQuery<OrganizationStatistics>({
     queryKey: ['organizations', 'statistics'],
     queryFn: () => fetchOrganizationStatistics(),
     options: {
-      enabled: true,
+      enabled: additionalOptions?.enabled ?? true,
     },
   })();
 };

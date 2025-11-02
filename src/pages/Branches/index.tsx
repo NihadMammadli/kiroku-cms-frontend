@@ -17,9 +17,15 @@ import {
   useCreateBranchMutation,
   useUpdateBranchMutation,
   useDeleteBranchMutation,
+  useCurrentUserQuery,
   type Branch,
   type BranchCreate,
 } from '../../api';
+import {
+  canCreateBranches,
+  canUpdateBranches,
+  canDeleteBranches,
+} from '../../utils/permissions';
 import styles from './Branches.module.css';
 
 const Branches: React.FC = () => {
@@ -33,6 +39,7 @@ const Branches: React.FC = () => {
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [form] = Form.useForm();
 
+  const { data: user } = useCurrentUserQuery();
   const {
     data: branches,
     isLoading,
@@ -107,11 +114,6 @@ const Branches: React.FC = () => {
       key: 'code',
     },
     {
-      title: 'Təşkilat',
-      dataIndex: 'organization_name',
-      key: 'organization_name',
-    },
-    {
       title: 'Şəhər',
       dataIndex: 'city',
       key: 'city',
@@ -148,20 +150,29 @@ const Branches: React.FC = () => {
       width: 150,
       render: (_: unknown, record: Branch) => (
         <Space>
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-            size="small"
-          />
-          <Popconfirm
-            title="Filialı silmək istədiyinizdən əminsiniz?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="Bəli"
-            cancelText="Xeyr"
-          >
-            <Button type="link" danger icon={<DeleteOutlined />} size="small" />
-          </Popconfirm>
+          {canUpdateBranches(user) && (
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              size="small"
+            />
+          )}
+          {canDeleteBranches(user) && (
+            <Popconfirm
+              title="Filialı silmək istədiyinizdən əminsiniz?"
+              onConfirm={() => handleDelete(record.id)}
+              okText="Bəli"
+              cancelText="Xeyr"
+            >
+              <Button
+                type="link"
+                danger
+                icon={<DeleteOutlined />}
+                size="small"
+              />
+            </Popconfirm>
+          )}
         </Space>
       ),
     },
@@ -185,14 +196,18 @@ const Branches: React.FC = () => {
       {contextHolder}
       <PageHeader
         title="Filiallar"
-        actions={[
-          {
-            label: 'Yeni Filial',
-            icon: <PlusOutlined />,
-            onClick: handleCreate,
-            type: 'primary',
-          },
-        ]}
+        actions={
+          canCreateBranches(user)
+            ? [
+                {
+                  label: 'Yeni Filial',
+                  icon: <PlusOutlined />,
+                  onClick: handleCreate,
+                  type: 'primary',
+                },
+              ]
+            : []
+        }
       />
 
       <FilterPanel

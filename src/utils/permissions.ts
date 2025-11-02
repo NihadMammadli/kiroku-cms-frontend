@@ -128,13 +128,14 @@ export const canDeleteBranches = (user: User | null | undefined): boolean => {
 
 /**
  * Check if user can view branches
- * All authenticated users except students and parents can view branches
+ * Organization Admin, Branch Admin, Branch Manager
  */
 export const canViewBranches = (user: User | null | undefined): boolean => {
-  if (!user) return false;
-  return (
-    user.user_type !== UserRoles.STUDENT && user.user_type !== UserRoles.PARENT
-  );
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+  ]);
 };
 
 /**

@@ -13,6 +13,7 @@ import {
   useOrganizationStatisticsQuery,
 } from '../../api';
 import { Button } from '../../components';
+import { canManageOrganization } from '../../utils/permissions';
 import styles from './Dashboard.module.css';
 
 const Dashboard: React.FC = () => {
@@ -23,17 +24,23 @@ const Dashboard: React.FC = () => {
     error: userError,
   } = useCurrentUserQuery();
 
+  const isOrgAdmin = user ? canManageOrganization(user) : false;
+
   const {
     data: organization,
     isLoading: orgLoading,
     error: orgError,
-  } = useOrganizationQuery();
+  } = useOrganizationQuery(undefined, {
+    enabled: isOrgAdmin,
+  });
 
   const {
     data: statistics,
     isLoading: statsLoading,
     error: statsError,
-  } = useOrganizationStatisticsQuery();
+  } = useOrganizationStatisticsQuery(undefined, {
+    enabled: isOrgAdmin,
+  });
 
   const getUserTypeLabel = (userType: string) => {
     const typeMap: Record<string, string> = {
@@ -120,7 +127,7 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      {organization && (
+      {isOrgAdmin && organization && (
         <Card
           title="Təşkilat Məlumatları"
           className={styles.organizationCard}
@@ -264,7 +271,7 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      {statistics && (
+      {isOrgAdmin && statistics && (
         <Card title="Statistika" loading={statsLoading}>
           <Row gutter={16}>
             <Col xs={24} sm={12} lg={6}>
@@ -311,14 +318,17 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      {(orgError || statsError) && !organization && !statistics && (
-        <Alert
-          message="Məlumat yoxdur"
-          description="Təşkilat və ya statistika məlumatları tapılmadı."
-          type="info"
-          showIcon
-        />
-      )}
+      {isOrgAdmin &&
+        (orgError || statsError) &&
+        !organization &&
+        !statistics && (
+          <Alert
+            message="Məlumat yoxdur"
+            description="Təşkilat və ya statistika məlumatları tapılmadı."
+            type="info"
+            showIcon
+          />
+        )}
     </div>
   );
 };
