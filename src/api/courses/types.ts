@@ -10,9 +10,6 @@ export interface Course {
   level: CourseLevel;
   status: CourseStatus;
   duration_hours: number;
-  branch: number;
-  branch_name: string;
-  course_admin: number | null;
   groups_count: string;
   created_at: string;
   updated_at: string;
@@ -25,8 +22,6 @@ export interface CourseCreate {
   level: CourseLevel;
   status?: CourseStatus;
   duration_hours: number;
-  branch: number;
-  course_admin?: number | null;
 }
 
 export interface CourseUpdate {
@@ -36,13 +31,9 @@ export interface CourseUpdate {
   level?: CourseLevel;
   status?: CourseStatus;
   duration_hours?: number;
-  branch?: number;
-  course_admin?: number | null;
 }
 
 export interface CourseListParams {
-  branch?: number;
-  course_admin?: number;
   level?: CourseLevel;
   search?: string;
   status?: CourseStatus;

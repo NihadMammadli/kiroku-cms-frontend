@@ -1,0 +1,14 @@
+@import '../../../styles/variables.css';
+
+.header {
+  composes: pageHeader from '../../../styles/mixins.css';
+}
+
+.title {
+  composes: pageTitle from '../../../styles/mixins.css';
+}
+
+.actions {
+  composes: pageActions from '../../../styles/mixins.css';
+}
+

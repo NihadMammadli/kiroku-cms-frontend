@@ -1,6 +1,6 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import { Inquiry, InquiryListParams } from './types';
+import type { Inquiry, InquiryListParams } from './types';
 
 // API functions
 const fetchInquiries = async (

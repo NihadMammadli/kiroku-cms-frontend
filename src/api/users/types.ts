@@ -1,4 +1,4 @@
-import { UserType } from '../auth/types';
+import type { UserType } from '../auth/types';
 
 export interface UserListParams {
   search?: string;

@@ -1,0 +1,214 @@
+/* Reusable CSS Mixins/Classes */
+
+/* Layout */
+.pageContainer {
+  padding: var(--spacing-lg);
+  min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: var(--spacing-md);
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.errorContainer {
+  padding: var(--spacing-lg);
+}
+
+/* Header */
+.pageHeader {
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 20px;
+  }
+}
+
+.pageActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* Cards */
+.card {
+  margin-bottom: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.cardCompact {
+  composes: card;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Forms */
+.formContainer {
+  max-width: 100%;
+}
+
+.formRow {
+  margin-bottom: var(--spacing-md);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* Filters */
+.filtersContainer {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: var(--color-bg-lighter);
+  border-radius: var(--radius-md);
+}
+
+.filtersRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .filtersRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stats/Info Items */
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infoLabel {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+/* Status Badges */
+.statusActive {
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+.statusInactive {
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+.statusPending {
+  color: var(--color-warning);
+  font-weight: 500;
+}
+
+/* Table Styles */
+.tableContainer {
+  background: var(--color-bg-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tableActions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+/* Modal */
+.modalContent {
+  padding: var(--spacing-md);
+}
+
+/* Utilities */
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.flexEnd {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.textEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scrollableX {
+  overflow-x: auto;
+}
+
+/* Responsive Utilities */
+.hideMobile {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hideMobile {
+    display: none;
+  }
+}
+
+.showMobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .showMobile {
+    display: block;
+  }
+}
+

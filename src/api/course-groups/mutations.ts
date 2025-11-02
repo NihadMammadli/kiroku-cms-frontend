@@ -1,6 +1,10 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import { CourseGroup, CourseGroupCreate, CourseGroupUpdate } from './types';
+import type {
+  CourseGroup,
+  CourseGroupCreate,
+  CourseGroupUpdate,
+} from './types';
 
 // API functions
 const createCourseGroup = async (

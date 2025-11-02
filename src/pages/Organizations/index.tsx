@@ -11,18 +11,18 @@ import {
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { PageHeader, FilterPanel } from '../../components/custom';
-import { Table, Input, Button } from '../../components/restyled';
+import { Table, Input, Button, Checkbox } from '../../components/restyled';
 import {
-  useBranchesQuery,
-  useCreateBranchMutation,
-  useUpdateBranchMutation,
-  useDeleteBranchMutation,
-  type Branch,
-  type BranchCreate,
+  useOrganizationsQuery,
+  useCreateOrganizationMutation,
+  usePartialUpdateOrganizationMutation,
+  useDeleteOrganizationMutation,
+  type Organization,
+  type OrganizationCreate,
 } from '../../api';
-import styles from './Branches.module.css';
+import styles from './Organizations.module.css';
 
-const Branches: React.FC = () => {
+const Organizations: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [searchTerm, setSearchTerm] = useState('');
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
@@ -30,31 +30,31 @@ const Branches: React.FC = () => {
     string | undefined
   >();
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
+  const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const [form] = Form.useForm();
 
   // Queries and mutations
   const {
-    data: branches,
+    data: organizations,
     isLoading,
     error,
-  } = useBranchesQuery({
+  } = useOrganizationsQuery({
     search: searchTerm || undefined,
     is_active: isActiveFilter,
   });
 
-  const createMutation = useCreateBranchMutation(messageApi);
-  const updateMutation = useUpdateBranchMutation(messageApi);
-  const deleteMutation = useDeleteBranchMutation(messageApi);
+  const createMutation = useCreateOrganizationMutation(messageApi);
+  const updateMutation = usePartialUpdateOrganizationMutation(messageApi);
+  const deleteMutation = useDeleteOrganizationMutation(messageApi);
 
   const handleCreate = () => {
-    setEditingBranch(null);
+    setEditingOrg(null);
     form.resetFields();
     setModalVisible(true);
   };
 
-  const handleEdit = (record: Branch) => {
-    setEditingBranch(record);
+  const handleEdit = (record: Organization) => {
+    setEditingOrg(record);
     form.setFieldsValue(record);
     setModalVisible(true);
   };
@@ -66,9 +66,9 @@ const Branches: React.FC = () => {
   const handleModalOk = async () => {
     try {
       const values = await form.validateFields();
-      if (editingBranch) {
+      if (editingOrg) {
         updateMutation.mutate(
-          { id: editingBranch.id, data: values },
+          { id: editingOrg.id, data: values },
           {
             onSuccess: () => {
               setModalVisible(false);
@@ -77,7 +77,7 @@ const Branches: React.FC = () => {
           }
         );
       } else {
-        createMutation.mutate(values as BranchCreate, {
+        createMutation.mutate(values as OrganizationCreate, {
           onSuccess: () => {
             setModalVisible(false);
             form.resetFields();
@@ -92,7 +92,7 @@ const Branches: React.FC = () => {
   const handleModalCancel = () => {
     setModalVisible(false);
     form.resetFields();
-    setEditingBranch(null);
+    setEditingOrg(null);
   };
 
   const columns = [
@@ -100,7 +100,8 @@ const Branches: React.FC = () => {
       title: 'Ad',
       dataIndex: 'name',
       key: 'name',
-      sorter: (a: Branch, b: Branch) => a.name.localeCompare(b.name),
+      sorter: (a: Organization, b: Organization) =>
+        a.name.localeCompare(b.name),
     },
     {
       title: 'Kod',
@@ -108,35 +109,38 @@ const Branches: React.FC = () => {
       key: 'code',
     },
     {
-      title: 'Təşkilat',
-      dataIndex: 'organization_name',
-      key: 'organization_name',
-    },
-    {
-      title: 'Şəhər',
-      dataIndex: 'city',
-      key: 'city',
-    },
-    {
-      title: 'Ölkə',
-      dataIndex: 'country',
-      key: 'country',
-    },
-    {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      render: (text: string) => text || '-',
     },
     {
       title: 'Telefon',
       dataIndex: 'phone_number',
       key: 'phone_number',
+      render: (text: string) => text || '-',
     },
     {
-      title: 'Admin',
-      dataIndex: 'branch_admin_name',
-      key: 'branch_admin_name',
+      title: 'Şəhər',
+      dataIndex: 'city',
+      key: 'city',
       render: (text: string) => text || '-',
+    },
+    {
+      title: 'Ölkə',
+      dataIndex: 'country',
+      key: 'country',
+      render: (text: string) => text || '-',
+    },
+    {
+      title: 'Filiallar',
+      dataIndex: 'branch_count',
+      key: 'branch_count',
+    },
+    {
+      title: 'Tələbələr',
+      dataIndex: 'total_students',
+      key: 'total_students',
     },
     {
       title: 'Status',
@@ -153,7 +157,7 @@ const Branches: React.FC = () => {
       key: 'actions',
       fixed: 'right' as const,
       width: 150,
-      render: (_: unknown, record: Branch) => (
+      render: (_: unknown, record: Organization) => (
         <Space>
           <Button
             type="link"
@@ -162,7 +166,7 @@ const Branches: React.FC = () => {
             size="small"
           />
           <Popconfirm
-            title="Filialı silmək istədiyinizdən əminsiniz?"
+            title="Təşkilatı silmək istədiyinizdən əminsiniz?"
             onConfirm={() => handleDelete(record.id)}
             okText="Bəli"
             cancelText="Xeyr"
@@ -179,7 +183,7 @@ const Branches: React.FC = () => {
       <div className={styles.container}>
         <Alert
           message="Xəta"
-          description="Filialları yükləmək mümkün olmadı"
+          description="Təşkilatları yükləmək mümkün olmadı"
           type="error"
           showIcon
         />
@@ -191,10 +195,10 @@ const Branches: React.FC = () => {
     <div className={styles.container}>
       {contextHolder}
       <PageHeader
-        title="Filiallar"
+        title="Təşkilatlar"
         actions={[
           {
-            label: 'Yeni Filial',
+            label: 'Yeni Təşkilat',
             icon: <PlusOutlined />,
             onClick: handleCreate,
             type: 'primary',
@@ -237,20 +241,20 @@ const Branches: React.FC = () => {
         ) : (
           <Table
             columns={columns}
-            dataSource={branches}
+            dataSource={organizations}
             rowKey="id"
             pagination={{
               pageSize: 10,
               showSizeChanger: true,
               showTotal: (total) => `Cəmi: ${total}`,
             }}
-            scroll={{ x: 1200 }}
+            scroll={{ x: 1400 }}
           />
         )}
       </div>
 
       <Modal
-        title={editingBranch ? 'Filialı Redaktə Et' : 'Yeni Filial'}
+        title={editingOrg ? 'Təşkilatı Redaktə Et' : 'Yeni Təşkilat'}
         open={modalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
@@ -274,49 +278,43 @@ const Branches: React.FC = () => {
           >
             <Input />
           </Form.Item>
+          <Form.Item name="description" label="Təsvir">
+            <Input.TextArea rows={3} />
+          </Form.Item>
           <Form.Item
             name="email"
             label="Email"
-            rules={[
-              { required: true, message: 'Email daxil edin' },
-              { type: 'email', message: 'Düzgün email daxil edin' },
-            ]}
+            rules={[{ type: 'email', message: 'Düzgün email daxil edin' }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="phone_number"
-            label="Telefon"
-            rules={[{ required: true, message: 'Telefon daxil edin' }]}
-          >
+          <Form.Item name="phone_number" label="Telefon">
             <Input />
           </Form.Item>
-          <Form.Item
-            name="address"
-            label="Ünvan"
-            rules={[{ required: true, message: 'Ünvan daxil edin' }]}
-          >
+          <Form.Item name="website" label="Veb sayt">
+            <Input />
+          </Form.Item>
+          <Form.Item name="address" label="Ünvan">
             <Input.TextArea rows={2} />
           </Form.Item>
-          <Form.Item
-            name="city"
-            label="Şəhər"
-            rules={[{ required: true, message: 'Şəhər daxil edin' }]}
-          >
+          <Form.Item name="city" label="Şəhər">
             <Input />
           </Form.Item>
           <Form.Item name="state" label="Ştat/Rayon">
             <Input />
           </Form.Item>
-          <Form.Item
-            name="country"
-            label="Ölkə"
-            rules={[{ required: true, message: 'Ölkə daxil edin' }]}
-          >
+          <Form.Item name="country" label="Ölkə">
             <Input />
           </Form.Item>
           <Form.Item name="postal_code" label="Poçt kodu">
             <Input />
+          </Form.Item>
+          <Form.Item
+            name="is_active"
+            valuePropName="checked"
+            initialValue={true}
+          >
+            <Checkbox>Aktiv</Checkbox>
           </Form.Item>
         </Form>
       </Modal>
@@ -324,4 +322,4 @@ const Branches: React.FC = () => {
   );
 };
 
-export default Branches;
+export default Organizations;

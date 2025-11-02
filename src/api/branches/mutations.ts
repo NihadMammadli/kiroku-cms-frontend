@@ -1,119 +1,70 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import type {
-  Branch,
-  UpdateMinPricePayload,
-  ToggleActivePayload,
-  ActivateProductPayload,
-  DeactivateProductPayload,
-  ActivateAllResponse,
-} from './types';
+import type { Branch, BranchCreate, BranchUpdate } from './types';
 
 // API functions
-const updateMinPrice = async (
-  payload: UpdateMinPricePayload
-): Promise<Branch> => {
-  const response = await api.patch(`/products/${payload.productId}/update/`, {
-    min_price: payload.minPrice,
-  });
+const createBranch = async (data: BranchCreate): Promise<Branch> => {
+  const response = await api.post('/branches/', data);
   return response.data;
 };
 
-const toggleActive = async (payload: ToggleActivePayload): Promise<Branch> => {
-  const response = await api.patch(`/products/${payload.productId}/update/`, {
-    active_to_bot: payload.active,
-  });
+const updateBranch = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: BranchUpdate;
+}): Promise<Branch> => {
+  const response = await api.put(`/branches/${id}/`, data);
   return response.data;
 };
 
-const fetchUmico = async (): Promise<void> => {
-  const response = await api.post(`/products/fetch-umico/`);
-  if (response.status === 202 || response.status === 200) {
-    return;
-  }
-  throw new Error(`Unexpected status code: ${response.status}`);
-};
-
-const activateAll = async (): Promise<ActivateAllResponse> => {
-  const response = await api.post(`/products/activate-all/`);
+const partialUpdateBranch = async ({
+  id,
+  data,
+}: {
+  id: number;
+  data: Partial<BranchUpdate>;
+}): Promise<Branch> => {
+  const response = await api.patch(`/branches/${id}/`, data);
   return response.data;
 };
 
-const activateProduct = async (
-  payload: ActivateProductPayload
-): Promise<void> => {
-  const response = await api.post(`/products/activate/`, payload);
-  return response.data;
-};
-
-const deactivateProduct = async (
-  payload: DeactivateProductPayload
-): Promise<void> => {
-  const response = await api.post(`/products/deactivate/`, payload);
-  return response.data;
+const deleteBranch = async (id: number): Promise<void> => {
+  await api.delete(`/branches/${id}/`);
 };
 
 // Mutation hooks
-export const useUpdateMinPriceMutation = createMutation<
+export const useCreateBranchMutation = createMutation<Branch, BranchCreate>({
+  mutationFn: createBranch,
+  invalidateKeys: ['branches'],
+  onSuccessMessage: 'Filial uğurla yaradıldı!',
+  onErrorMessage: 'Filial yaratmaq alınmadı',
+});
+
+export const useUpdateBranchMutation = createMutation<
   Branch,
-  UpdateMinPricePayload
+  { id: number; data: BranchUpdate }
 >({
-  mutationFn: updateMinPrice,
+  mutationFn: updateBranch,
   invalidateKeys: ['branches'],
-  onSuccessMessage: 'Minimum qiymət uğurla yeniləndi!',
-  onErrorMessage: (error) => `Yeniləmək alınmadı: ${error.message}`,
+  onSuccessMessage: 'Filial uğurla yeniləndi!',
+  onErrorMessage: 'Filial yeniləmək alınmadı',
 });
 
-export const useToggleActiveMutation = createMutation<
+export const usePartialUpdateBranchMutation = createMutation<
   Branch,
-  ToggleActivePayload
+  { id: number; data: Partial<BranchUpdate> }
 >({
-  mutationFn: toggleActive,
+  mutationFn: partialUpdateBranch,
   invalidateKeys: ['branches'],
-  onSuccessMessage: (data) =>
-    `Uğurla ${data.active_to_bot ? 'aktiv edildi' : 'deaktiv edildi'}!`,
-  onErrorMessage: (error) => `Statusunu dəyişmək alınmadı: ${error.message}`,
+  onSuccessMessage: 'Filial uğurla yeniləndi!',
+  onErrorMessage: 'Filial yeniləmək alınmadı',
 });
 
-export const useFetchUmicoMutation = createMutation<void, void>({
-  mutationFn: fetchUmico,
-  invalidateKeys: [],
-  onSuccessMessage: 'Umico məlumatları uğurla yeniləndi!',
-  onErrorMessage: (error) => `Yeniləmək alınmadı: ${error.message}`,
-  onSuccessCallback: () => {
-    // Delayed invalidation for Umico fetch
-    setTimeout(() => {
-      // This will be handled by the component
-    }, 2000);
-  },
-});
-
-export const useActivateAllMutation = createMutation<ActivateAllResponse, void>(
-  {
-    mutationFn: activateAll,
-    invalidateKeys: ['branches'],
-    onSuccessMessage: (data) =>
-      `${data.activated_count} element uğurla aktiv edildi!`,
-    onErrorMessage: (error) => `Aktiv etmək alınmadı: ${error.message}`,
-  }
-);
-
-export const useActivateProductMutation = createMutation<
-  void,
-  ActivateProductPayload
->({
-  mutationFn: activateProduct,
+export const useDeleteBranchMutation = createMutation<void, number>({
+  mutationFn: deleteBranch,
   invalidateKeys: ['branches'],
-  onSuccessMessage: 'Uğurla aktiv edildi!',
-  onErrorMessage: (error) => `Aktiv etmək alınmadı: ${error.message}`,
-});
-
-export const useDeactivateProductMutation = createMutation<
-  void,
-  DeactivateProductPayload
->({
-  mutationFn: deactivateProduct,
-  invalidateKeys: ['branches'],
-  onSuccessMessage: 'Uğurla deaktiv edildi!',
-  onErrorMessage: (error) => `Deaktiv etmək alınmadı: ${error.message}`,
+  onSuccessMessage: 'Filial uğurla silindi!',
+  onErrorMessage: 'Filial silmək alınmadı',
 });

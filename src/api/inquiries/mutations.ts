@@ -1,6 +1,6 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import {
+import type {
   Inquiry,
   InquiryCreate,
   InquiryUpdate,

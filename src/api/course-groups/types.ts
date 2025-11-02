@@ -25,13 +25,13 @@ export interface CourseGroup {
   course_name: string;
   name: string;
   code: string;
-  teacher: number | null;
+  teacher: number[];
   teacher_name: string;
   max_students: number;
   annual_price: string;
   monthly_price: string;
   schedule: ScheduleItem[];
-  days_of_week: any[];
+  days_of_week: unknown[];
   schedule_display: string;
   start_date: string;
   end_date: string;
@@ -48,7 +48,7 @@ export interface CourseGroupCreate {
   course: number;
   name: string;
   code: string;
-  teacher?: number | null;
+  teacher: number[];
   max_students: number;
   annual_price: string;
   monthly_price: string;
@@ -63,7 +63,7 @@ export interface CourseGroupUpdate {
   course?: number;
   name?: string;
   code?: string;
-  teacher?: number | null;
+  teacher?: number[];
   max_students?: number;
   annual_price?: string;
   monthly_price?: string;
@@ -78,5 +78,5 @@ export interface CourseGroupListParams {
   course?: number;
   search?: string;
   status?: CourseGroupStatus;
-  teacher?: number;
+  teacher?: number[];
 }

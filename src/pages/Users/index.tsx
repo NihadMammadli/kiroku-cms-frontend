@@ -8,21 +8,31 @@ import {
   Popconfirm,
   Tag,
   Space,
+  DatePicker,
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 import { PageHeader, FilterPanel } from '../../components/custom';
-import { Table, Input, Button } from '../../components/restyled';
 import {
+  Table,
+  Input,
+  Select,
+  Button,
+  Checkbox,
+} from '../../components/restyled';
+import {
+  useUsersQuery,
+  useCreateUserMutation,
+  usePartialUpdateUserMutation,
+  useDeleteUserMutation,
   useBranchesQuery,
-  useCreateBranchMutation,
-  useUpdateBranchMutation,
-  useDeleteBranchMutation,
-  type Branch,
-  type BranchCreate,
+  type User,
+  type UserCreate,
+  type UserType,
 } from '../../api';
-import styles from './Branches.module.css';
+import styles from './Users.module.css';
 
-const Branches: React.FC = () => {
+const Users: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [searchTerm, setSearchTerm] = useState('');
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | undefined>();
@@ -30,32 +40,37 @@ const Branches: React.FC = () => {
     string | undefined
   >();
   const [modalVisible, setModalVisible] = useState(false);
-  const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [form] = Form.useForm();
 
   // Queries and mutations
   const {
-    data: branches,
+    data: users,
     isLoading,
     error,
-  } = useBranchesQuery({
+  } = useUsersQuery({
     search: searchTerm || undefined,
     is_active: isActiveFilter,
   });
 
-  const createMutation = useCreateBranchMutation(messageApi);
-  const updateMutation = useUpdateBranchMutation(messageApi);
-  const deleteMutation = useDeleteBranchMutation(messageApi);
+  const { data: branches } = useBranchesQuery({ is_active: true });
+
+  const createMutation = useCreateUserMutation(messageApi);
+  const updateMutation = usePartialUpdateUserMutation(messageApi);
+  const deleteMutation = useDeleteUserMutation(messageApi);
 
   const handleCreate = () => {
-    setEditingBranch(null);
+    setEditingUser(null);
     form.resetFields();
     setModalVisible(true);
   };
 
-  const handleEdit = (record: Branch) => {
-    setEditingBranch(record);
-    form.setFieldsValue(record);
+  const handleEdit = (record: User) => {
+    setEditingUser(record);
+    form.setFieldsValue({
+      ...record,
+      date_of_birth: record.date_of_birth ? dayjs(record.date_of_birth) : null,
+    });
     setModalVisible(true);
   };
 
@@ -66,9 +81,16 @@ const Branches: React.FC = () => {
   const handleModalOk = async () => {
     try {
       const values = await form.validateFields();
-      if (editingBranch) {
+      const formData = {
+        ...values,
+        date_of_birth: values.date_of_birth
+          ? values.date_of_birth.format('YYYY-MM-DD')
+          : null,
+      };
+
+      if (editingUser) {
         updateMutation.mutate(
-          { id: editingBranch.id, data: values },
+          { id: editingUser.id, data: formData },
           {
             onSuccess: () => {
               setModalVisible(false);
@@ -77,7 +99,7 @@ const Branches: React.FC = () => {
           }
         );
       } else {
-        createMutation.mutate(values as BranchCreate, {
+        createMutation.mutate(formData as UserCreate, {
           onSuccess: () => {
             setModalVisible(false);
             form.resetFields();
@@ -92,35 +114,35 @@ const Branches: React.FC = () => {
   const handleModalCancel = () => {
     setModalVisible(false);
     form.resetFields();
-    setEditingBranch(null);
+    setEditingUser(null);
+  };
+
+  const userTypeLabels: Record<UserType, string> = {
+    NOT_SET: 'Təyin edilməyib',
+    STUDENT: 'Tələbə',
+    PARENT: 'Valideyn',
+    TEACHER: 'Müəllim',
+    BRANCH_MANAGER: 'Filial Meneceri',
+    BRANCH_ADMIN: 'Filial Admini',
+    ORGANIZATION_ADMIN: 'Təşkilat Admini',
+  };
+
+  const userTypeColors: Record<UserType, string> = {
+    NOT_SET: 'default',
+    STUDENT: 'blue',
+    PARENT: 'cyan',
+    TEACHER: 'green',
+    BRANCH_MANAGER: 'orange',
+    BRANCH_ADMIN: 'purple',
+    ORGANIZATION_ADMIN: 'red',
   };
 
   const columns = [
     {
-      title: 'Ad',
-      dataIndex: 'name',
-      key: 'name',
-      sorter: (a: Branch, b: Branch) => a.name.localeCompare(b.name),
-    },
-    {
-      title: 'Kod',
-      dataIndex: 'code',
-      key: 'code',
-    },
-    {
-      title: 'Təşkilat',
-      dataIndex: 'organization_name',
-      key: 'organization_name',
-    },
-    {
-      title: 'Şəhər',
-      dataIndex: 'city',
-      key: 'city',
-    },
-    {
-      title: 'Ölkə',
-      dataIndex: 'country',
-      key: 'country',
+      title: 'Ad Soyad',
+      dataIndex: 'full_name',
+      key: 'full_name',
+      sorter: (a: User, b: User) => a.full_name.localeCompare(b.full_name),
     },
     {
       title: 'Email',
@@ -131,12 +153,15 @@ const Branches: React.FC = () => {
       title: 'Telefon',
       dataIndex: 'phone_number',
       key: 'phone_number',
+      render: (text: string) => text || '-',
     },
     {
-      title: 'Admin',
-      dataIndex: 'branch_admin_name',
-      key: 'branch_admin_name',
-      render: (text: string) => text || '-',
+      title: 'İstifadəçi tipi',
+      dataIndex: 'user_type',
+      key: 'user_type',
+      render: (type: UserType) => (
+        <Tag color={userTypeColors[type]}>{userTypeLabels[type]}</Tag>
+      ),
     },
     {
       title: 'Status',
@@ -153,7 +178,7 @@ const Branches: React.FC = () => {
       key: 'actions',
       fixed: 'right' as const,
       width: 150,
-      render: (_: unknown, record: Branch) => (
+      render: (_: unknown, record: User) => (
         <Space>
           <Button
             type="link"
@@ -162,7 +187,7 @@ const Branches: React.FC = () => {
             size="small"
           />
           <Popconfirm
-            title="Filialı silmək istədiyinizdən əminsiniz?"
+            title="İstifadəçini silmək istədiyinizdən əminsiniz?"
             onConfirm={() => handleDelete(record.id)}
             okText="Bəli"
             cancelText="Xeyr"
@@ -179,7 +204,7 @@ const Branches: React.FC = () => {
       <div className={styles.container}>
         <Alert
           message="Xəta"
-          description="Filialları yükləmək mümkün olmadı"
+          description="İstifadəçiləri yükləmək mümkün olmadı"
           type="error"
           showIcon
         />
@@ -191,10 +216,10 @@ const Branches: React.FC = () => {
     <div className={styles.container}>
       {contextHolder}
       <PageHeader
-        title="Filiallar"
+        title="İstifadəçilər"
         actions={[
           {
-            label: 'Yeni Filial',
+            label: 'Yeni İstifadəçi',
             icon: <PlusOutlined />,
             onClick: handleCreate,
             type: 'primary',
@@ -237,7 +262,7 @@ const Branches: React.FC = () => {
         ) : (
           <Table
             columns={columns}
-            dataSource={branches}
+            dataSource={users}
             rowKey="id"
             pagination={{
               pageSize: 10,
@@ -250,7 +275,7 @@ const Branches: React.FC = () => {
       </div>
 
       <Modal
-        title={editingBranch ? 'Filialı Redaktə Et' : 'Yeni Filial'}
+        title={editingUser ? 'İstifadəçini Redaktə Et' : 'Yeni İstifadəçi'}
         open={modalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
@@ -261,16 +286,16 @@ const Branches: React.FC = () => {
       >
         <Form form={form} layout="vertical" className={styles.form}>
           <Form.Item
-            name="name"
+            name="first_name"
             label="Ad"
             rules={[{ required: true, message: 'Ad daxil edin' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="code"
-            label="Kod"
-            rules={[{ required: true, message: 'Kod daxil edin' }]}
+            name="last_name"
+            label="Soyad"
+            rules={[{ required: true, message: 'Soyad daxil edin' }]}
           >
             <Input />
           </Form.Item>
@@ -284,39 +309,65 @@ const Branches: React.FC = () => {
           >
             <Input />
           </Form.Item>
+          {!editingUser && (
+            <Form.Item
+              name="password"
+              label="Şifrə"
+              rules={[
+                { required: true, message: 'Şifrə daxil edin' },
+                { min: 6, message: 'Şifrə ən azı 6 simvol olmalıdır' },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+          )}
           <Form.Item
-            name="phone_number"
-            label="Telefon"
-            rules={[{ required: true, message: 'Telefon daxil edin' }]}
+            name="user_type"
+            label="İstifadəçi tipi"
+            rules={[{ required: true, message: 'İstifadəçi tipi seçin' }]}
           >
+            <Select
+              options={[
+                { label: 'Təyin edilməyib', value: 'NOT_SET' },
+                { label: 'Tələbə', value: 'STUDENT' },
+                { label: 'Valideyn', value: 'PARENT' },
+                { label: 'Müəllim', value: 'TEACHER' },
+                { label: 'Filial Meneceri', value: 'BRANCH_MANAGER' },
+                { label: 'Filial Admini', value: 'BRANCH_ADMIN' },
+                { label: 'Təşkilat Admini', value: 'ORGANIZATION_ADMIN' },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item name="phone_number" label="Telefon">
             <Input />
           </Form.Item>
-          <Form.Item
-            name="address"
-            label="Ünvan"
-            rules={[{ required: true, message: 'Ünvan daxil edin' }]}
-          >
+          <Form.Item name="date_of_birth" label="Doğum tarixi">
+            <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
+          </Form.Item>
+          <Form.Item name="address" label="Ünvan">
             <Input.TextArea rows={2} />
           </Form.Item>
+          <Form.Item name="branches" label="Filiallar">
+            <Select
+              mode="multiple"
+              options={branches?.map((branch) => ({
+                label: branch.name,
+                value: branch.id,
+              }))}
+              showSearch
+              filterOption={(input, option) =>
+                String(option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            />
+          </Form.Item>
           <Form.Item
-            name="city"
-            label="Şəhər"
-            rules={[{ required: true, message: 'Şəhər daxil edin' }]}
+            name="is_active"
+            valuePropName="checked"
+            initialValue={true}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item name="state" label="Ştat/Rayon">
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="country"
-            label="Ölkə"
-            rules={[{ required: true, message: 'Ölkə daxil edin' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="postal_code" label="Poçt kodu">
-            <Input />
+            <Checkbox>Aktiv</Checkbox>
           </Form.Item>
         </Form>
       </Modal>
@@ -324,4 +375,4 @@ const Branches: React.FC = () => {
   );
 };
 
-export default Branches;
+export default Users;

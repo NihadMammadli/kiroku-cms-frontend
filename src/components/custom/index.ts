@@ -1,2 +1,2 @@
-// Custom components will be added here
-// Example: export { CustomCard } from './CustomCard';
+export { PageHeader } from './PageHeader';
+export { FilterPanel } from './FilterPanel';

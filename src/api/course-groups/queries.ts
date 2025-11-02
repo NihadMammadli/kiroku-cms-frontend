@@ -1,6 +1,6 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import { CourseGroup, CourseGroupListParams } from './types';
+import type { CourseGroup, CourseGroupListParams } from './types';
 
 // API functions
 const fetchCourseGroups = async (

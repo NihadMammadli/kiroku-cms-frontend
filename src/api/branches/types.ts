@@ -1,46 +1,53 @@
 export interface Branch {
-  id: string;
+  id: number;
+  organization_name: string;
   name: string;
-  price: number;
-  retail_price: number;
-  min_price: number;
-  active_to_bot: boolean;
+  code: string;
+  address: string;
+  city: string;
+  state: string | null;
+  country: string;
+  postal_code: string | null;
+  phone_number: string;
+  email: string;
+  branch_admin: number | null;
+  branch_admin_name: string;
   is_active: boolean;
-  offer_id: string;
-  umico_id: string;
-  product_url: string;
-  mp_price_is_below_min_price: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface PaginatedBranchesResponse {
-  results: Branch[];
-  count: number;
-  next: string | null;
-  previous: string | null;
+export interface BranchCreate {
+  name: string;
+  code: string;
+  address: string;
+  city: string;
+  state?: string | null;
+  country: string;
+  postal_code?: string | null;
+  phone_number: string;
+  email: string;
+  branch_admin?: number | null;
+  is_active?: boolean;
 }
 
-export interface UpdateMinPricePayload {
-  productId: string;
-  minPrice: number;
+export interface BranchUpdate {
+  name?: string;
+  code?: string;
+  address?: string;
+  city?: string;
+  state?: string | null;
+  country?: string;
+  postal_code?: string | null;
+  phone_number?: string;
+  email?: string;
+  branch_admin?: number | null;
+  is_active?: boolean;
 }
 
-export interface ToggleActivePayload {
-  productId: string;
-  active: boolean;
-}
-
-export interface ActivateProductPayload {
-  offer_id: string;
-  old_price: number;
-  retail_price: number;
-  qty: number;
-}
-
-export interface DeactivateProductPayload {
-  offer_id: string;
-}
-
-export interface ActivateAllResponse {
-  activated_count: number;
-  status: string;
+export interface BranchListParams {
+  search?: string;
+  is_active?: boolean;
+  city?: string;
+  country?: string;
 }

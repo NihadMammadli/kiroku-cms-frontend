@@ -3,8 +3,15 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './layouts/index';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
-import Branches from './pages/Branches';
 import Dashboard from './pages/Dashboard';
+import Branches from './pages/Branches';
+import Courses from './pages/Courses';
+import CourseGroups from './pages/CourseGroups';
+import Attendance from './pages/Attendance';
+import Enrollments from './pages/Enrollments';
+import Inquiries from './pages/Inquiries';
+import Organizations from './pages/Organizations';
+import Users from './pages/Users';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -24,6 +31,62 @@ const AppRoutes: React.FC = () => {
         element={
           <Layout>
             <Branches />
+          </Layout>
+        }
+      />
+      <Route
+        path="/courses"
+        element={
+          <Layout>
+            <Courses />
+          </Layout>
+        }
+      />
+      <Route
+        path="/course-groups"
+        element={
+          <Layout>
+            <CourseGroups />
+          </Layout>
+        }
+      />
+      <Route
+        path="/attendance"
+        element={
+          <Layout>
+            <Attendance />
+          </Layout>
+        }
+      />
+      <Route
+        path="/enrollments"
+        element={
+          <Layout>
+            <Enrollments />
+          </Layout>
+        }
+      />
+      <Route
+        path="/inquiries"
+        element={
+          <Layout>
+            <Inquiries />
+          </Layout>
+        }
+      />
+      <Route
+        path="/organizations"
+        element={
+          <Layout>
+            <Organizations />
+          </Layout>
+        }
+      />
+      <Route
+        path="/users"
+        element={
+          <Layout>
+            <Users />
           </Layout>
         }
       />

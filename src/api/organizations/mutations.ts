@@ -1,6 +1,10 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import { Organization, OrganizationCreate, OrganizationUpdate } from './types';
+import type {
+  Organization,
+  OrganizationCreate,
+  OrganizationUpdate,
+} from './types';
 
 // API functions
 const createOrganization = async (

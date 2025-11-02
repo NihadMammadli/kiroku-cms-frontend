@@ -1,6 +1,6 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import { Course, CourseCreate, CourseUpdate } from './types';
+import type { Course, CourseCreate, CourseUpdate } from './types';
 
 // API functions
 const createCourse = async (data: CourseCreate): Promise<Course> => {

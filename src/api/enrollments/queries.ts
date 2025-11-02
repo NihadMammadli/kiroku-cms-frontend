@@ -1,6 +1,6 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import { Enrollment, EnrollmentListParams } from './types';
+import type { Enrollment, EnrollmentListParams } from './types';
 
 // API functions
 const fetchEnrollments = async (

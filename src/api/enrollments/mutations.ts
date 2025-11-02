@@ -1,6 +1,6 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
-import { Enrollment, EnrollmentCreate, EnrollmentUpdate } from './types';
+import type { Enrollment, EnrollmentCreate, EnrollmentUpdate } from './types';
 
 // API functions
 const createEnrollment = async (

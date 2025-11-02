@@ -1,6 +1,6 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import { Organization, OrganizationListParams } from './types';
+import type { Organization, OrganizationListParams } from './types';
 
 // API functions
 const fetchOrganizations = async (
