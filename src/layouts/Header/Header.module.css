@@ -7,6 +7,22 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menuButton {
+  font-size: 18px;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .logo {
   cursor: pointer;
   display: flex;
@@ -17,5 +33,21 @@
   height: 36px;
   width: 36px;
   object-fit: contain;
+}
+
+.userMenu {
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.userMenu:hover {
+  background-color: #f5f5f5;
+}
+
+.userName {
+  font-weight: 500;
+  color: #333;
 }
 

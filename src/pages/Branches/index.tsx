@@ -33,7 +33,6 @@ const Branches: React.FC = () => {
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [form] = Form.useForm();
 
-  // Queries and mutations
   const {
     data: branches,
     isLoading,
@@ -131,12 +130,6 @@ const Branches: React.FC = () => {
       title: 'Telefon',
       dataIndex: 'phone_number',
       key: 'phone_number',
-    },
-    {
-      title: 'Admin',
-      dataIndex: 'branch_admin_name',
-      key: 'branch_admin_name',
-      render: (text: string) => text || '-',
     },
     {
       title: 'Status',

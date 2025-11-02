@@ -61,3 +61,25 @@
   color: #666;
 }
 
+.organizationCard {
+  margin-bottom: 24px;
+}
+
+.orgInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.orgInfoLabel {
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+}
+
+.orgInfoValue {
+  color: #333;
+  font-size: 16px;
+}
+

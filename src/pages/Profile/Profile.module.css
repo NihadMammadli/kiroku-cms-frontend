@@ -8,7 +8,118 @@
   composes: loadingContainer from '../../styles/mixins.css';
 }
 
-.card {
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.profileCard {
   composes: card from '../../styles/mixins.css';
+  margin-bottom: 24px;
+}
+
+.avatarCol {
+  display: flex;
+  justify-content: center;
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.avatar {
+  border: 4px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.userName {
+  margin: 8px 0 0 0;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.userTypeTag,
+.statusTag {
+  font-size: 14px;
+  padding: 4px 12px;
+}
+
+.profileInfo {
+  padding: 20px 0;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+}
+
+.infoValue {
+  color: #333;
+  font-size: 16px;
+}
+
+.branchTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.editButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.editForm {
+  padding: 20px 0;
+}
+
+.metaCard {
+  margin-top: 0;
+}
+
+.metaInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+}
+
+.metaValue {
+  color: #333;
+  font-size: 16px;
 }
 

@@ -1,31 +1,39 @@
-import React, { useEffect } from 'react';
-import { Card, Row, Col, Spin, Alert, message } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Card, Row, Col, Spin, Alert, Statistic } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useCurrentUserQuery, useLogoutMutation } from '../../api/login';
+import {
+  ShopOutlined,
+  TeamOutlined,
+  BookOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { useCurrentUserQuery } from '../../api/login';
+import {
+  useOrganizationQuery,
+  useOrganizationStatisticsQuery,
+} from '../../api';
 import { Button } from '../../components';
 import styles from './Dashboard.module.css';
 
 const Dashboard: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const {
     data: user,
     isLoading: userLoading,
     error: userError,
   } = useCurrentUserQuery();
-  const logoutMutation = useLogoutMutation(messageApi);
-  useEffect(() => {
-    if (logoutMutation.isSuccess) {
-      setTimeout(() => {
-        navigate('/login');
-      }, 500);
-    }
-  }, [logoutMutation.isSuccess, navigate]);
 
-  const handleLogout = () => {
-    logoutMutation.mutate();
-  };
+  const {
+    data: organization,
+    isLoading: orgLoading,
+    error: orgError,
+  } = useOrganizationQuery();
+
+  const {
+    data: statistics,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useOrganizationStatisticsQuery();
 
   const getUserTypeLabel = (userType: string) => {
     const typeMap: Record<string, string> = {
@@ -64,6 +72,8 @@ const Dashboard: React.FC = () => {
       </div>
     );
   }
+
+  const isLoading = userLoading || orgLoading || statsLoading;
 
   return (
     <div className={styles.container}>
@@ -112,7 +122,156 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      <Row gutter={16}></Row>
+      {organization && (
+        <Card
+          title="Təşkilat Məlumatları"
+          className={styles.organizationCard}
+          loading={orgLoading}
+        >
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={12}>
+              <div className={styles.orgInfoItem}>
+                <span className={styles.orgInfoLabel}>Təşkilat adı:</span>
+                <span className={styles.orgInfoValue}>{organization.name}</span>
+              </div>
+            </Col>
+            <Col xs={24} sm={12}>
+              <div className={styles.orgInfoItem}>
+                <span className={styles.orgInfoLabel}>Kod:</span>
+                <span className={styles.orgInfoValue}>{organization.code}</span>
+              </div>
+            </Col>
+            {organization.description && (
+              <Col xs={24}>
+                <div className={styles.orgInfoItem}>
+                  <span className={styles.orgInfoLabel}>Təsvir:</span>
+                  <span className={styles.orgInfoValue}>
+                    {organization.description}
+                  </span>
+                </div>
+              </Col>
+            )}
+            {organization.email && (
+              <Col xs={24} sm={12}>
+                <div className={styles.orgInfoItem}>
+                  <span className={styles.orgInfoLabel}>Email:</span>
+                  <span className={styles.orgInfoValue}>
+                    {organization.email}
+                  </span>
+                </div>
+              </Col>
+            )}
+            {organization.phone_number && (
+              <Col xs={24} sm={12}>
+                <div className={styles.orgInfoItem}>
+                  <span className={styles.orgInfoLabel}>Telefon:</span>
+                  <span className={styles.orgInfoValue}>
+                    {organization.phone_number}
+                  </span>
+                </div>
+              </Col>
+            )}
+            {organization.website && (
+              <Col xs={24} sm={12}>
+                <div className={styles.orgInfoItem}>
+                  <span className={styles.orgInfoLabel}>Vebsayt:</span>
+                  <span className={styles.orgInfoValue}>
+                    <a
+                      href={organization.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {organization.website}
+                    </a>
+                  </span>
+                </div>
+              </Col>
+            )}
+            {organization.address && (
+              <Col xs={24}>
+                <div className={styles.orgInfoItem}>
+                  <span className={styles.orgInfoLabel}>Ünvan:</span>
+                  <span className={styles.orgInfoValue}>
+                    {organization.address}
+                  </span>
+                </div>
+              </Col>
+            )}
+            <Col xs={24} sm={12}>
+              <div className={styles.orgInfoItem}>
+                <span className={styles.orgInfoLabel}>Filial sayı:</span>
+                <span className={styles.orgInfoValue}>
+                  {organization.branch_count}
+                </span>
+              </div>
+            </Col>
+            <Col xs={24} sm={12}>
+              <div className={styles.orgInfoItem}>
+                <span className={styles.orgInfoLabel}>Ümumi tələbələr:</span>
+                <span className={styles.orgInfoValue}>
+                  {organization.total_students}
+                </span>
+              </div>
+            </Col>
+          </Row>
+        </Card>
+      )}
+
+      {statistics && (
+        <Card title="Statistika" loading={statsLoading}>
+          <Row gutter={16}>
+            <Col xs={24} sm={12} lg={6}>
+              <Card>
+                <Statistic
+                  title="Filiallar"
+                  value={statistics.branches_count || 0}
+                  prefix={<ShopOutlined />}
+                  valueStyle={{ color: '#3f8600' }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={6}>
+              <Card>
+                <Statistic
+                  title="Tələbələr"
+                  value={statistics.students_count || 0}
+                  prefix={<TeamOutlined />}
+                  valueStyle={{ color: '#1890ff' }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={6}>
+              <Card>
+                <Statistic
+                  title="Müəllimlər"
+                  value={statistics.teachers_count || 0}
+                  prefix={<UserOutlined />}
+                  valueStyle={{ color: '#cf1322' }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12} lg={6}>
+              <Card>
+                <Statistic
+                  title="Kurslar"
+                  value={statistics.courses_count || 0}
+                  prefix={<BookOutlined />}
+                  valueStyle={{ color: '#faad14' }}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+      )}
+
+      {(orgError || statsError) && !organization && !statistics && (
+        <Alert
+          message="Məlumat yoxdur"
+          description="Təşkilat və ya statistika məlumatları tapılmadı."
+          type="info"
+          showIcon
+        />
+      )}
     </div>
   );
 };

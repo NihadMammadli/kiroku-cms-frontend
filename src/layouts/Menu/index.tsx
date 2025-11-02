@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Drawer, Menu as AntMenu, message } from 'antd';
+import { Drawer, Menu as AntMenu, message, Avatar, Space } from 'antd';
 import {
   DashboardOutlined,
   BankOutlined,
@@ -11,9 +11,10 @@ import {
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../../api';
+import { useLogoutMutation, useCurrentUserQuery } from '../../api';
 import styles from './Menu.module.css';
 
 interface MenuProps {
@@ -26,7 +27,18 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
+  const { data: user } = useCurrentUserQuery();
   const logoutMutation = useLogoutMutation(messageApi);
+
+  const userTypeLabels: Record<string, string> = {
+    NOT_SET: 'Təyin edilməyib',
+    STUDENT: 'Tələbə',
+    PARENT: 'Valideyn',
+    TEACHER: 'Müəllim',
+    BRANCH_MANAGER: 'Filial Meneceri',
+    BRANCH_ADMIN: 'Filial Admini',
+    ORGANIZATION_ADMIN: 'Təşkilat Admini',
+  };
 
   // Handle navigation after successful logout
   useEffect(() => {
@@ -50,7 +62,7 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
     }
   };
 
-  const menuItems = [
+  const mainMenuItems = [
     {
       key: '/dashboard',
       icon: <DashboardOutlined />,
@@ -91,10 +103,9 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       icon: <UserOutlined />,
       label: 'İstifadəçilər',
     },
-    {
-      key: 'divider-bottom',
-      type: 'divider' as const,
-    },
+  ];
+
+  const bottomMenuItems = [
     {
       key: '/profile',
       icon: <SettingOutlined />,
@@ -110,21 +121,57 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
 
   return (
     <Drawer
-      title="Naviqasiya"
+      title={null}
       placement="left"
       onClose={onClose}
       open={visible}
       width={280}
       className={styles.drawer}
+      closeIcon={<CloseOutlined />}
+      headerStyle={{ display: 'none' }}
     >
       {contextHolder}
-      <AntMenu
-        mode="vertical"
-        selectedKeys={[getSelectedKey()]}
-        items={menuItems}
-        onClick={({ key }) => handleMenuClick(key)}
-        className={styles.menu}
-      />
+      <div className={styles.drawerContent}>
+        <div className={styles.userSection}>
+          <button onClick={onClose} className={styles.closeButton}>
+            <CloseOutlined />
+          </button>
+          <Space direction="vertical" size={8} className={styles.userInfo}>
+            <Avatar
+              size={48}
+              icon={<UserOutlined />}
+              src={user?.profile_picture}
+              className={styles.userAvatar}
+            />
+            <div className={styles.userDetails}>
+              <div className={styles.userName}>{user?.full_name || 'User'}</div>
+              <div className={styles.userRole}>
+                {user?.user_type
+                  ? userTypeLabels[user.user_type]
+                  : 'Customer Admin'}
+              </div>
+            </div>
+          </Space>
+        </div>
+        <div className={styles.menuContainer}>
+          <AntMenu
+            mode="vertical"
+            selectedKeys={[getSelectedKey()]}
+            items={mainMenuItems}
+            onClick={({ key }) => handleMenuClick(key)}
+            className={styles.menu}
+          />
+        </div>
+        <div className={styles.bottomMenu}>
+          <AntMenu
+            mode="vertical"
+            selectedKeys={[getSelectedKey()]}
+            items={bottomMenuItems}
+            onClick={({ key }) => handleMenuClick(key)}
+            className={styles.menu}
+          />
+        </div>
+      </div>
     </Drawer>
   );
 };

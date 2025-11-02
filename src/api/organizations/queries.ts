@@ -10,8 +10,8 @@ const fetchOrganizations = async (
   return response.data;
 };
 
-const fetchOrganization = async (id: number): Promise<Organization> => {
-  const response = await api.get(`/organizations/${id}/`);
+const fetchOrganization = async (): Promise<Organization> => {
+  const response = await api.get(`/organizations/my/`);
   return response.data;
 };
 
@@ -20,8 +20,8 @@ const fetchOrganizationBranches = async (id: number): Promise<any[]> => {
   return response.data;
 };
 
-const fetchOrganizationStatistics = async (id: number): Promise<any> => {
-  const response = await api.get(`/organizations/${id}/statistics/`);
+const fetchOrganizationStatistics = async (): Promise<any> => {
+  const response = await api.get(`/organizations/my/statistics/`);
   return response.data;
 };
 
@@ -33,12 +33,12 @@ export const useOrganizationsQuery = (params?: OrganizationListParams) => {
   })();
 };
 
-export const useOrganizationQuery = (id: number) => {
+export const useOrganizationQuery = () => {
   return createQuery<Organization>({
-    queryKey: ['organizations', 'detail', id],
-    queryFn: () => fetchOrganization(id),
+    queryKey: ['organizations', 'detail'],
+    queryFn: () => fetchOrganization(),
     options: {
-      enabled: !!id,
+      enabled: true,
     },
   })();
 };
@@ -53,12 +53,12 @@ export const useOrganizationBranchesQuery = (id: number) => {
   })();
 };
 
-export const useOrganizationStatisticsQuery = (id: number) => {
+export const useOrganizationStatisticsQuery = () => {
   return createQuery<any>({
-    queryKey: ['organizations', 'statistics', id],
-    queryFn: () => fetchOrganizationStatistics(id),
+    queryKey: ['organizations', 'statistics'],
+    queryFn: () => fetchOrganizationStatistics(),
     options: {
-      enabled: !!id,
+      enabled: true,
     },
   })();
 };
