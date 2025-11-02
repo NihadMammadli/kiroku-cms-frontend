@@ -12,7 +12,6 @@ export interface UserCreate {
   first_name: string;
   last_name: string;
   user_type: UserType;
-  password: string;
   phone_number?: string | null;
   date_of_birth?: string | null;
   address?: string | null;

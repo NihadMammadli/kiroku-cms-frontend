@@ -309,18 +309,6 @@ const Users: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          {!editingUser && (
-            <Form.Item
-              name="password"
-              label="Şifrə"
-              rules={[
-                { required: true, message: 'Şifrə daxil edin' },
-                { min: 6, message: 'Şifrə ən azı 6 simvol olmalıdır' },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-          )}
           <Form.Item
             name="user_type"
             label="İstifadəçi tipi"
