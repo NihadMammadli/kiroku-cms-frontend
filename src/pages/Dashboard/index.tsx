@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { Card, Statistic, Row, Col, Spin, Alert, message } from 'antd';
-import {
-  UserOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useCurrentUserQuery, useLogoutMutation, useCSRFTokenQuery, useUsersListQuery } from '../../api/login';
+import { useCurrentUserQuery, useLogoutMutation } from '../../api/login';
 import { Button } from '../../components';
 import styles from './Dashboard.module.css';
 
@@ -16,10 +13,8 @@ const Dashboard: React.FC = () => {
     data: user,
     isLoading: userLoading,
     error: userError,
-  } = useCurrentUserQuery();  
+  } = useCurrentUserQuery();
   const logoutMutation = useLogoutMutation(messageApi);
-  const { data: csrfToken } = useCSRFTokenQuery();
-  const { data: usersList } = useUsersListQuery();
   // Handle navigation after successful logout
   useEffect(() => {
     if (logoutMutation.isSuccess) {

@@ -13,7 +13,6 @@ const Login: React.FC = () => {
 
   const loginMutation = useLoginMutation(messageApi);
 
-  // Handle navigation after successful login
   useEffect(() => {
     if (loginMutation.isSuccess) {
       setTimeout(() => {

@@ -12,11 +12,6 @@ export const authAPI = {
     const response = await api.get('/auth/csrf/');
     return response.data;
   },
-
-  getUsersList: async (): Promise<CSRFTokenResponse> => {
-    const response = await api.get('/users/');
-    return response.data;
-  },
 };
 
 export const useCurrentUserQuery = () =>
@@ -25,7 +20,6 @@ export const useCurrentUserQuery = () =>
     queryFn: () => authAPI.getCurrentUser(),
     options: {
       retry: false,
-      // Cookie-based auth - always try to fetch user if on authenticated page
     },
   })();
 
@@ -33,10 +27,4 @@ export const useCSRFTokenQuery = () =>
   createQuery<CSRFTokenResponse>({
     queryKey: ['csrfToken'],
     queryFn: () => authAPI.getCSRFToken(),
-  })();
-
-export const useUsersListQuery = () =>
-  createQuery<CSRFTokenResponse>({
-    queryKey: ['usersList'],
-    queryFn: () => authAPI.getUsersList(),
   })();
