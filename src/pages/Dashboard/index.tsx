@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Card, Statistic, Row, Col, Spin, Alert, message } from 'antd';
-import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Spin, Alert, message } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useCurrentUserQuery, useLogoutMutation } from '../../api/login';
 import { Button } from '../../components';
@@ -15,7 +15,6 @@ const Dashboard: React.FC = () => {
     error: userError,
   } = useCurrentUserQuery();
   const logoutMutation = useLogoutMutation(messageApi);
-  // Handle navigation after successful logout
   useEffect(() => {
     if (logoutMutation.isSuccess) {
       setTimeout(() => {
@@ -68,18 +67,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {contextHolder}
       <div className={styles.header}>
         <h1 className={styles.title}>İdarə Paneli</h1>
-        <Button
-          type="primary"
-          danger
-          icon={<LogoutOutlined />}
-          onClick={handleLogout}
-          loading={logoutMutation.isPending}
-        >
-          Çıxış
-        </Button>
       </div>
 
       {user && (
@@ -123,8 +112,7 @@ const Dashboard: React.FC = () => {
         </Card>
       )}
 
-      <Row gutter={16}>
-      </Row>
+      <Row gutter={16}></Row>
     </div>
   );
 };

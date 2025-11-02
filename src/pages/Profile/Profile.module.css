@@ -8,12 +8,7 @@
   composes: loadingContainer from '../../styles/mixins.css';
 }
 
-.tableContainer {
-  composes: tableContainer from '../../styles/mixins.css';
-}
-
-.form {
-  composes: formContainer from '../../styles/mixins.css';
-  padding-top: var(--spacing-lg);
+.card {
+  composes: card from '../../styles/mixins.css';
 }
 

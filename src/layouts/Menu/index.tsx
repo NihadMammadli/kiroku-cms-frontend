@@ -1,5 +1,5 @@
-import React from 'react';
-import { Drawer, Menu as AntMenu } from 'antd';
+import React, { useEffect } from 'react';
+import { Drawer, Menu as AntMenu, message } from 'antd';
 import {
   DashboardOutlined,
   BankOutlined,
@@ -8,10 +8,12 @@ import {
   CheckCircleOutlined,
   UserAddOutlined,
   PhoneOutlined,
-  GlobalOutlined,
   UserOutlined,
+  SettingOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../../api';
 import styles from './Menu.module.css';
 
 interface MenuProps {
@@ -22,9 +24,30 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const logoutMutation = useLogoutMutation(messageApi);
+
+  // Handle navigation after successful logout
+  useEffect(() => {
+    if (logoutMutation.isSuccess) {
+      setTimeout(() => {
+        navigate('/login');
+        onClose();
+      }, 500);
+    }
+  }, [logoutMutation.isSuccess, navigate, onClose]);
 
   const getSelectedKey = () => {
     return location.pathname;
+  };
+
+  const handleMenuClick = (key: string) => {
+    if (key === 'logout') {
+      logoutMutation.mutate();
+    } else {
+      onMenuClick(key);
+    }
   };
 
   const menuItems = [
@@ -34,22 +57,9 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       label: 'İdarə Paneli',
     },
     {
-      key: 'divider-1',
-      type: 'divider' as const,
-    },
-    {
-      key: '/organizations',
-      icon: <GlobalOutlined />,
-      label: 'Təşkilatlar',
-    },
-    {
       key: '/branches',
       icon: <BankOutlined />,
       label: 'Filiallar',
-    },
-    {
-      key: 'divider-2',
-      type: 'divider' as const,
     },
     {
       key: '/courses',
@@ -62,10 +72,6 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       label: 'Qruplar',
     },
     {
-      key: 'divider-3',
-      type: 'divider' as const,
-    },
-    {
       key: '/enrollments',
       icon: <UserAddOutlined />,
       label: 'Qeydiyyatlar',
@@ -76,10 +82,6 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       label: 'Davamiyyət',
     },
     {
-      key: 'divider-4',
-      type: 'divider' as const,
-    },
-    {
       key: '/inquiries',
       icon: <PhoneOutlined />,
       label: 'Sorğular',
@@ -88,6 +90,21 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       key: '/users',
       icon: <UserOutlined />,
       label: 'İstifadəçilər',
+    },
+    {
+      key: 'divider-bottom',
+      type: 'divider' as const,
+    },
+    {
+      key: '/profile',
+      icon: <SettingOutlined />,
+      label: 'Mənim Profilim',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: 'Çıxış',
+      danger: true,
     },
   ];
 
@@ -100,11 +117,12 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
       width={280}
       className={styles.drawer}
     >
+      {contextHolder}
       <AntMenu
         mode="vertical"
         selectedKeys={[getSelectedKey()]}
         items={menuItems}
-        onClick={({ key }) => onMenuClick(key)}
+        onClick={({ key }) => handleMenuClick(key)}
         className={styles.menu}
       />
     </Drawer>

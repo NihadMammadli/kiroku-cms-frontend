@@ -10,8 +10,8 @@ import CourseGroups from './pages/CourseGroups';
 import Attendance from './pages/Attendance';
 import Enrollments from './pages/Enrollments';
 import Inquiries from './pages/Inquiries';
-import Organizations from './pages/Organizations';
 import Users from './pages/Users';
+import Profile from './pages/Profile';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -75,18 +75,18 @@ const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/organizations"
-        element={
-          <Layout>
-            <Organizations />
-          </Layout>
-        }
-      />
-      <Route
         path="/users"
         element={
           <Layout>
             <Users />
+          </Layout>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <Layout>
+            <Profile />
           </Layout>
         }
       />
