@@ -17,11 +17,17 @@ import {
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
+  useCurrentUserQuery,
   type Course,
   type CourseCreate,
   type CourseLevel,
   type CourseStatus,
 } from '../../api';
+import {
+  canCreateCourses,
+  canUpdateCourses,
+  canDeleteCourses,
+} from '../../utils/permissions';
 import styles from './Courses.module.css';
 
 const Courses: React.FC = () => {
@@ -32,6 +38,8 @@ const Courses: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [form] = Form.useForm();
+
+  const { data: user } = useCurrentUserQuery();
 
   // Queries and mutations
   const {
@@ -115,7 +123,7 @@ const Courses: React.FC = () => {
     ARCHIVED: 'warning',
   };
 
-  const columns = [
+  const baseColumns = [
     {
       title: 'Ad',
       dataIndex: 'name',
@@ -147,36 +155,52 @@ const Courses: React.FC = () => {
       key: 'duration_hours',
       sorter: (a: Course, b: Course) => a.duration_hours - b.duration_hours,
     },
-    {
-      title: 'Qruplar',
-      dataIndex: 'groups_count',
-      key: 'groups_count',
-    },
-    {
-      title: 'Əməliyyatlar',
-      key: 'actions',
-      fixed: 'right' as const,
-      width: 150,
-      render: (_: unknown, record: Course) => (
-        <Space>
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-            size="small"
-          />
-          <Popconfirm
-            title="Kursu silmək istədiyinizdən əminsiniz?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="Bəli"
-            cancelText="Xeyr"
-          >
-            <Button type="link" danger icon={<DeleteOutlined />} size="small" />
-          </Popconfirm>
-        </Space>
-      ),
-    },
   ];
+
+  // Conditionally add Groups and Actions columns for admins/managers
+  const columns = canCreateCourses(user)
+    ? [
+        ...baseColumns,
+        {
+          title: 'Qruplar',
+          dataIndex: 'groups_count',
+          key: 'groups_count',
+        },
+        {
+          title: 'Əməliyyatlar',
+          key: 'actions',
+          fixed: 'right' as const,
+          width: 150,
+          render: (_: unknown, record: Course) => (
+            <Space>
+              {canUpdateCourses(user) && (
+                <Button
+                  type="link"
+                  icon={<EditOutlined />}
+                  onClick={() => handleEdit(record)}
+                  size="small"
+                />
+              )}
+              {canDeleteCourses(user) && (
+                <Popconfirm
+                  title="Kursu silmək istədiyinizdən əminsiniz?"
+                  onConfirm={() => handleDelete(record.id)}
+                  okText="Bəli"
+                  cancelText="Xeyr"
+                >
+                  <Button
+                    type="link"
+                    danger
+                    icon={<DeleteOutlined />}
+                    size="small"
+                  />
+                </Popconfirm>
+              )}
+            </Space>
+          ),
+        },
+      ]
+    : baseColumns;
 
   if (error) {
     return (
@@ -196,14 +220,18 @@ const Courses: React.FC = () => {
       {contextHolder}
       <PageHeader
         title="Kurslar"
-        actions={[
-          {
-            label: 'Yeni Kurs',
-            icon: <PlusOutlined />,
-            onClick: handleCreate,
-            type: 'primary',
-          },
-        ]}
+        actions={
+          canCreateCourses(user)
+            ? [
+                {
+                  label: 'Yeni Kurs',
+                  icon: <PlusOutlined />,
+                  onClick: handleCreate,
+                  type: 'primary',
+                },
+              ]
+            : []
+        }
       />
 
       <FilterPanel
@@ -212,13 +240,14 @@ const Courses: React.FC = () => {
             type: 'input',
             placeholder: 'Axtar...',
             value: searchTerm,
-            onChange: setSearchTerm,
+            onChange: (value) => setSearchTerm((value as string) || ''),
           },
           level: {
             type: 'select',
             placeholder: 'Səviyyə',
             value: levelFilter,
-            onChange: setLevelFilter,
+            onChange: (value) =>
+              setLevelFilter(value as CourseLevel | undefined),
             options: [
               { label: 'Başlanğıc', value: 'BEGINNER' },
               { label: 'Orta', value: 'INTERMEDIATE' },
@@ -226,17 +255,22 @@ const Courses: React.FC = () => {
               { label: 'Expert', value: 'EXPERT' },
             ],
           },
-          status: {
-            type: 'select',
-            placeholder: 'Status',
-            value: statusFilter,
-            onChange: setStatusFilter,
-            options: [
-              { label: 'Qaralama', value: 'DRAFT' },
-              { label: 'Dərc edilib', value: 'PUBLISHED' },
-              { label: 'Arxivləşdirilib', value: 'ARCHIVED' },
-            ],
-          },
+          ...(canCreateCourses(user)
+            ? {
+                status: {
+                  type: 'select' as const,
+                  placeholder: 'Status',
+                  value: statusFilter,
+                  onChange: (value: string | number | boolean | undefined) =>
+                    setStatusFilter(value as CourseStatus | undefined),
+                  options: [
+                    { label: 'Qaralama', value: 'DRAFT' },
+                    { label: 'Dərc edilib', value: 'PUBLISHED' },
+                    { label: 'Arxivləşdirilib', value: 'ARCHIVED' },
+                  ],
+                },
+              }
+            : {}),
         }}
       />
 

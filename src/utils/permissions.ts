@@ -65,26 +65,38 @@ export const canManageOrganization = (
 
 /**
  * Check if user can create courses
- * Only Organization Admin
+ * Organization Admin, Branch Admin, Branch Manager
  */
 export const canCreateCourses = (user: User | null | undefined): boolean => {
-  return hasRole(user, UserRoles.ORGANIZATION_ADMIN);
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+  ]);
 };
 
 /**
  * Check if user can update courses
- * Only Organization Admin
+ * Organization Admin, Branch Admin, Branch Manager
  */
 export const canUpdateCourses = (user: User | null | undefined): boolean => {
-  return hasRole(user, UserRoles.ORGANIZATION_ADMIN);
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+  ]);
 };
 
 /**
  * Check if user can delete courses
- * Only Organization Admin
+ * Organization Admin, Branch Admin, Branch Manager
  */
 export const canDeleteCourses = (user: User | null | undefined): boolean => {
-  return hasRole(user, UserRoles.ORGANIZATION_ADMIN);
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+  ]);
 };
 
 /**
