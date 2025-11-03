@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  BankOutlined,
+  TeamOutlined,
+  BookOutlined,
+  CalendarOutlined,
+  MessageOutlined,
+  BarChartOutlined,
+  CrownOutlined,
+  IdcardOutlined,
+  UserOutlined,
+  StarOutlined,
+  ArrowRightOutlined,
+  CheckOutlined,
+} from '@ant-design/icons';
 import { useCurrentUserQuery } from '../../api/auth';
 import { UserRoles } from '../../utils/permissions';
 import styles from './Landing.module.css';
@@ -45,15 +59,31 @@ const Landing: React.FC = () => {
   };
 
   const statistics = [
-    { value: '100+', label: 'Təşkilat', icon: '🏢' },
-    { value: '5000+', label: 'Tələbə', icon: '👨‍🎓' },
-    { value: '500+', label: 'Müəllim', icon: '👨‍🏫' },
-    { value: '1000+', label: 'Kurs', icon: '📚' },
+    {
+      value: '100+',
+      label: 'Təşkilat',
+      icon: <BankOutlined style={{ color: '#667eea' }} />,
+    },
+    {
+      value: '5000+',
+      label: 'Tələbə',
+      icon: <TeamOutlined style={{ color: '#667eea' }} />,
+    },
+    {
+      value: '500+',
+      label: 'Müəllim',
+      icon: <UserOutlined style={{ color: '#667eea' }} />,
+    },
+    {
+      value: '1000+',
+      label: 'Kurs',
+      icon: <BookOutlined style={{ color: '#667eea' }} />,
+    },
   ];
 
   const features = [
     {
-      icon: '🏢',
+      icon: <BankOutlined style={{ color: '#ffffff' }} />,
       title: 'Filiallarınızı Asanlıqla İdarə Edin',
       description:
         'Kiroku sizə bir neçə fiziki və ya onlayn tədris məkanını vahid platformadan idarə etməyə imkan verir.',
@@ -66,7 +96,7 @@ const Landing: React.FC = () => {
       ],
     },
     {
-      icon: '📚',
+      icon: <BookOutlined style={{ color: '#ffffff' }} />,
       title: 'Kursların Peşəkar İdarə Olunması',
       description:
         'Kiroku kurs rəhbərlərinə bütün tədris proseslərini eyni yerdən izləmək imkanı yaradır:',
@@ -80,7 +110,7 @@ const Landing: React.FC = () => {
       ],
     },
     {
-      icon: '📋',
+      icon: <CalendarOutlined style={{ color: '#ffffff' }} />,
       title: 'Davamlılıq və Jurnal İdarəçiliyi',
       description:
         'Artıq davamiyyət cədvəllərini kağızla və ya Excel-də aparmağa ehtiyac yoxdur.',
@@ -93,7 +123,7 @@ const Landing: React.FC = () => {
       ],
     },
     {
-      icon: '👥',
+      icon: <TeamOutlined style={{ color: '#ffffff' }} />,
       title: 'Komanda İdarəçiliyi və Roller',
       description:
         'Kiroku çox səviyyəli idarəetmə mexanizminə malikdir. Burada hər kəs öz roluna uyğun imkanlara sahib olur:',
@@ -107,7 +137,7 @@ const Landing: React.FC = () => {
       ],
     },
     {
-      icon: '💬',
+      icon: <MessageOutlined style={{ color: '#ffffff' }} />,
       title: 'Sorğular və Müraciətlər',
       description:
         'Potensial tələbələrdən gələn sorğuları sistemli şəkildə idarə edin və onları kurs qeydiyyatına çevirin.',
@@ -120,7 +150,7 @@ const Landing: React.FC = () => {
       ],
     },
     {
-      icon: '📊',
+      icon: <BarChartOutlined style={{ color: '#ffffff' }} />,
       title: 'Hesabatlar və Analitika',
       description:
         'Təşkilatınızın fəaliyyətini detallı statistika və hesabatlarla izləyin.',
@@ -137,7 +167,7 @@ const Landing: React.FC = () => {
   const roles = [
     {
       title: 'Təşkilat Admini',
-      icon: '👑',
+      icon: <CrownOutlined style={{ color: '#667eea' }} />,
       description: 'Bütün sistem üzərində tam nəzarət və idarəetmə',
       features: [
         'Filial idarəsi',
@@ -148,7 +178,7 @@ const Landing: React.FC = () => {
     },
     {
       title: 'Filial Meneceri',
-      icon: '💼',
+      icon: <IdcardOutlined style={{ color: '#667eea' }} />,
       description: 'Filial səviyyəsində tədris proseslərinin idarəsi',
       features: [
         'Kurs idarəsi',
@@ -159,7 +189,7 @@ const Landing: React.FC = () => {
     },
     {
       title: 'Müəllim',
-      icon: '👨‍🏫',
+      icon: <UserOutlined style={{ color: '#667eea' }} />,
       description: 'Dərslərin keçirilməsi və tələbə idarəsi',
       features: [
         'Davamiyyət qeydi',
@@ -170,7 +200,7 @@ const Landing: React.FC = () => {
     },
     {
       title: 'Tələbə',
-      icon: '👨‍🎓',
+      icon: <TeamOutlined style={{ color: '#667eea' }} />,
       description: 'Şəxsi məlumatlar və tədris materiallarına çıxış',
       features: [
         'Profil məlumatları',
@@ -219,7 +249,9 @@ const Landing: React.FC = () => {
           className={`${styles.heroContent} ${isVisible ? styles.fadeInUp : ''}`}
         >
           <div className={styles.heroBadge}>
-            <span className={styles.badgeIcon}>✨</span>
+            <span className={styles.badgeIcon}>
+              <StarOutlined style={{ color: '#667eea' }} />
+            </span>
             Müasir Tədris Həlli
           </div>
           <h1 className={styles.heroTitle}>
@@ -234,7 +266,9 @@ const Landing: React.FC = () => {
           <div className={styles.heroButtons}>
             <button className={styles.heroCta} onClick={handleLoginClick}>
               İndi Başlayın
-              <span className={styles.arrowIcon}>→</span>
+              <span className={styles.arrowIcon}>
+                <ArrowRightOutlined style={{ color: '#ffffff' }} />
+              </span>
             </button>
             <button
               className={styles.heroSecondary}
@@ -342,7 +376,9 @@ const Landing: React.FC = () => {
                 key={index}
                 className={`${styles.benefitItem} ${styles.animateOnScroll}`}
               >
-                <span className={styles.benefitIcon}>✓</span>
+                <span className={styles.benefitIcon}>
+                  <CheckOutlined style={{ color: '#10b981' }} />
+                </span>
                 <span className={styles.benefitText}>
                   {benefit.replace('✅ ', '')}
                 </span>
@@ -363,7 +399,9 @@ const Landing: React.FC = () => {
           </p>
           <button className={styles.ctaButton} onClick={handleLoginClick}>
             <span>İndi Başlayın</span>
-            <span className={styles.arrowIcon}>→</span>
+            <span className={styles.arrowIcon}>
+              <ArrowRightOutlined style={{ color: '#667eea' }} />
+            </span>
           </button>
         </div>
       </section>
