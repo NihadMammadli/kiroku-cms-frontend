@@ -8,6 +8,8 @@ import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import Branches from './pages/Branches';
 import Courses from './pages/Courses';
+import CourseGroups from './pages/CourseGroups';
+import MyGroups from './pages/MyGroups';
 import Attendance from './pages/Attendance';
 import Enrollments from './pages/Enrollments';
 import Inquiries from './pages/Inquiries';
@@ -75,6 +77,37 @@ const AppRoutes: React.FC = () => {
           >
             <Layout>
               <Courses />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected Routes - Course Groups (Admins, Managers, Teachers) */}
+      <Route
+        path="/courses/:courseId/groups"
+        element={
+          <ProtectedRoute
+            allowedRoles={[
+              UserRoles.ORGANIZATION_ADMIN,
+              UserRoles.BRANCH_ADMIN,
+              UserRoles.BRANCH_MANAGER,
+              UserRoles.TEACHER,
+            ]}
+          >
+            <Layout>
+              <CourseGroups />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected Routes - My Groups (Teachers and Students) */}
+      <Route
+        path="/my-groups"
+        element={
+          <ProtectedRoute allowedRoles={[UserRoles.TEACHER, UserRoles.STUDENT]}>
+            <Layout>
+              <MyGroups />
             </Layout>
           </ProtectedRoute>
         }

@@ -436,3 +436,38 @@ export const canEditField = (
   const editableFields = getEditableProfileFields(user);
   return editableFields.includes(fieldName);
 };
+
+/**
+ * Check if user can view course groups
+ * Organization Admin, Branch Admin, Branch Manager, Teacher
+ */
+export const canViewCourseGroups = (user: User | null | undefined): boolean => {
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+    UserRoles.TEACHER,
+  ]);
+};
+
+/**
+ * Check if user can manage course groups (create, update, delete)
+ * Organization Admin, Branch Admin, Branch Manager
+ */
+export const canManageCourseGroups = (
+  user: User | null | undefined
+): boolean => {
+  return hasAnyRole(user, [
+    UserRoles.ORGANIZATION_ADMIN,
+    UserRoles.BRANCH_ADMIN,
+    UserRoles.BRANCH_MANAGER,
+  ]);
+};
+
+/**
+ * Check if user can view my groups page
+ * Teachers and Students
+ */
+export const canViewMyGroups = (user: User | null | undefined): boolean => {
+  return hasAnyRole(user, [UserRoles.TEACHER, UserRoles.STUDENT]);
+};

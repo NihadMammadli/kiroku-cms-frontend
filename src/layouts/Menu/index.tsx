@@ -11,6 +11,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
   CloseOutlined,
+  TeamOutlined,
 } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLogoutMutation, useCurrentUserQuery } from '../../api';
@@ -22,6 +23,7 @@ import {
   canViewAttendance,
   canViewInquiries,
   canManageUsers,
+  canViewMyGroups,
   getUserRoleLabel,
 } from '../../utils/permissions';
 import styles from './Menu.module.css';
@@ -91,6 +93,15 @@ const Menu: React.FC<MenuProps> = ({ visible, onClose, onMenuClick }) => {
         key: '/courses',
         icon: <BookOutlined />,
         label: 'Kurslar',
+      });
+    }
+
+    // My Groups - only for teachers and students
+    if (canViewMyGroups(user)) {
+      items.push({
+        key: '/my-groups',
+        icon: <TeamOutlined />,
+        label: 'Mənim Qruplarım',
       });
     }
 

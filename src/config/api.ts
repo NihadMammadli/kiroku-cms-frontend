@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const isLocalhost =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: isLocalhost ? '/api' : import.meta.env.VITE_API_URL || '/api',
   timeout: 1000000,
   withCredentials: true,
 });
@@ -31,12 +35,12 @@ const fetchCSRFToken = async (): Promise<string> => {
   // Create new fetch promise
   csrfTokenPromise = (async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL || '/api'}/auth/csrf/`,
-        {
-          withCredentials: true,
-        }
-      );
+      const baseURL = isLocalhost
+        ? '/api'
+        : import.meta.env.VITE_API_URL || '/api';
+      const response = await axios.get(`${baseURL}/auth/csrf/`, {
+        withCredentials: true,
+      });
       const token = response.data.csrf_token;
       csrfToken = token;
       return token;

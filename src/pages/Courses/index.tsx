@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Modal,
   Form,
@@ -27,10 +28,12 @@ import {
   canCreateCourses,
   canUpdateCourses,
   canDeleteCourses,
+  canViewCourseGroups,
 } from '../../utils/permissions';
 import styles from './Courses.module.css';
 
 const Courses: React.FC = () => {
+  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<CourseStatus | undefined>();
@@ -102,6 +105,13 @@ const Courses: React.FC = () => {
     setModalVisible(false);
     form.resetFields();
     setEditingCourse(null);
+  };
+
+  const handleRowClick = (record: Course) => {
+    // Organization Admin, Branch Admin, and Branch Manager can view course groups
+    if (canViewCourseGroups(user)) {
+      navigate(`/courses/${record.id}/groups`);
+    }
   };
 
   const levelLabels: Record<CourseLevel, string> = {
@@ -290,6 +300,10 @@ const Courses: React.FC = () => {
               showTotal: (total) => `Cəmi: ${total}`,
             }}
             scroll={{ x: 1000 }}
+            onRow={(record) => ({
+              onClick: () => handleRowClick(record),
+              style: canViewCourseGroups(user) ? { cursor: 'pointer' } : {},
+            })}
           />
         )}
       </div>
