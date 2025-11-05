@@ -14,25 +14,11 @@ import {
   ArrowRightOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
-import { useCurrentUserQuery } from '../../api/auth';
-import { UserRoles } from '../../utils/permissions';
 import styles from './Landing.module.css';
 
 const Landing: React.FC = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const { data: user } = useCurrentUserQuery();
-
-  // Redirect authenticated users to appropriate page
-  useEffect(() => {
-    if (user) {
-      if (user.user_type === UserRoles.STUDENT) {
-        navigate('/dashboard');
-      } else {
-        navigate('/dashboard');
-      }
-    }
-  }, [user, navigate]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -49,7 +35,7 @@ const Landing: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on mount
+    handleScroll(); 
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
