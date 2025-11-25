@@ -1,249 +1,305 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Modal, Form, message, Spin, Alert, Tag, Space, DatePicker, Popconfirm } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
-import { Table, Input, Button } from '../../components/restyled';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  useAttendanceSessionsByCourseGroupQuery,
-  useCreateAttendanceSessionMutation,
-  usePartialUpdateAttendanceSessionMutation,
-  useDeleteAttendanceSessionMutation,
-  type AttendanceSession,
-  type AttendanceSessionCreate,
-} from '../../api';
-import styles from './GroupDetails.module.css';
+	Modal,
+	Form,
+	message,
+	Spin,
+	Alert,
+	Tag,
+	Space,
+	DatePicker,
+	Popconfirm,
+	Tabs,
+} from "antd";
+import {
+	PlusOutlined,
+	EditOutlined,
+	DeleteOutlined,
+	EyeOutlined,
+	TableOutlined,
+	UnorderedListOutlined,
+} from "@ant-design/icons";
+import dayjs from "dayjs";
+import { Table, Input, Button } from "../../components/restyled";
+import {
+	useAttendanceSessionsByCourseGroupQuery,
+	useCreateAttendanceSessionMutation,
+	usePartialUpdateAttendanceSessionMutation,
+	useDeleteAttendanceSessionMutation,
+	type AttendanceSession,
+	type AttendanceSessionCreate,
+} from "../../api";
+import AttendanceMatrix from "./AttendanceMatrix";
+import styles from "./GroupDetails.module.css";
 
 interface GroupAttendanceProps {
-  groupId: number;
+	groupId: number;
 }
 
-const GroupAttendance: React.FC<GroupAttendanceProps> = ({ groupId }) => {
-  const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editingSession, setEditingSession] = useState<AttendanceSession | null>(null);
-  const [form] = Form.useForm();
+const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+	const [modalVisible, setModalVisible] = useState(false);
+	const [editingSession, setEditingSession] =
+		useState<AttendanceSession | null>(null);
+	const [form] = Form.useForm();
 
-  // Queries and mutations
-  const { data: sessions, isLoading, error } = useAttendanceSessionsByCourseGroupQuery(groupId);
+	// Queries and mutations
+	const {
+		data: sessions,
+		isLoading,
+		error,
+	} = useAttendanceSessionsByCourseGroupQuery(groupId);
 
-  const createMutation = useCreateAttendanceSessionMutation(messageApi);
-  const updateMutation = usePartialUpdateAttendanceSessionMutation(messageApi);
-  const deleteMutation = useDeleteAttendanceSessionMutation(messageApi);
+	const createMutation = useCreateAttendanceSessionMutation(messageApi);
+	const updateMutation = usePartialUpdateAttendanceSessionMutation(messageApi);
+	const deleteMutation = useDeleteAttendanceSessionMutation(messageApi);
 
-  const handleCreate = () => {
-    setEditingSession(null);
-    form.resetFields();
-    form.setFieldValue('course_group', groupId);
-    setModalVisible(true);
-  };
+	const handleCreate = () => {
+		setEditingSession(null);
+		form.resetFields();
+		form.setFieldValue("course_group", groupId);
+		setModalVisible(true);
+	};
 
-  const handleEdit = (record: AttendanceSession) => {
-    setEditingSession(record);
-    form.setFieldsValue({
-      ...record,
-      date: record.date ? dayjs(record.date) : null,
-    });
-    setModalVisible(true);
-  };
+	const handleEdit = (record: AttendanceSession) => {
+		setEditingSession(record);
+		form.setFieldsValue({
+			...record,
+			date: record.date ? dayjs(record.date) : null,
+		});
+		setModalVisible(true);
+	};
 
-  const handleView = (sessionId: number) => {
-    navigate(`/attendance/session/${sessionId}`);
-  };
+	const handleView = (sessionId: number) => {
+		navigate(`/attendance/session/${sessionId}`);
+	};
 
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(id);
-  };
+	const handleDelete = (id: number) => {
+		deleteMutation.mutate(id);
+	};
 
-  const handleModalOk = async () => {
-    try {
-      const values = await form.validateFields();
-      const formData = {
-        ...values,
-        date: values.date ? values.date.format('YYYY-MM-DD') : undefined,
-      };
+	const handleModalOk = async () => {
+		try {
+			const values = await form.validateFields();
+			const formData = {
+				...values,
+				date: values.date ? values.date.format("YYYY-MM-DD") : undefined,
+			};
 
-      if (editingSession) {
-        updateMutation.mutate(
-          {
-            id: editingSession.id,
-            data: { notes: formData.notes, date: formData.date },
-          },
-          {
-            onSuccess: () => {
-              setModalVisible(false);
-              form.resetFields();
-            },
-          }
-        );
-      } else {
-        createMutation.mutate(formData as AttendanceSessionCreate, {
-          onSuccess: () => {
-            setModalVisible(false);
-            form.resetFields();
-          },
-        });
-      }
-    } catch (error) {
-      console.error('Validation failed:', error);
-    }
-  };
+			if (editingSession) {
+				const updateData: { notes?: string | null; date?: string } = {};
+				if (formData.notes !== undefined) updateData.notes = formData.notes;
+				if (formData.date !== undefined) updateData.date = formData.date;
 
-  const handleModalCancel = () => {
-    setModalVisible(false);
-    form.resetFields();
-    setEditingSession(null);
-  };
+				updateMutation.mutate(
+					{
+						id: editingSession.id,
+						data: updateData,
+					},
+					{
+						onSuccess: () => {
+							setModalVisible(false);
+							form.resetFields();
+						},
+					},
+				);
+			} else {
+				createMutation.mutate(formData as AttendanceSessionCreate, {
+					onSuccess: () => {
+						setModalVisible(false);
+						form.resetFields();
+					},
+				});
+			}
+		} catch (error) {
+			console.error("Validation failed:", error);
+		}
+	};
 
-  const columns = [
-    {
-      title: 'Tarix',
-      dataIndex: 'date',
-      key: 'date',
-      sorter: (a: AttendanceSession, b: AttendanceSession) =>
-        new Date(a.date).getTime() - new Date(b.date).getTime(),
-      render: (date: string) => dayjs(date).format('DD.MM.YYYY'),
-    },
-    {
-      title: 'Ümumi',
-      dataIndex: 'total_students',
-      key: 'total_students',
-      render: (count: number) => <Tag>{count}</Tag>,
-    },
-    {
-      title: 'İştirak',
-      dataIndex: 'present_count',
-      key: 'present_count',
-      render: (count: number) => <Tag color="success">{count}</Tag>,
-    },
-    {
-      title: 'Qalıb',
-      dataIndex: 'absent_count',
-      key: 'absent_count',
-      render: (count: number) => <Tag color="error">{count}</Tag>,
-    },
-    {
-      title: 'Gecikmə',
-      dataIndex: 'late_count',
-      key: 'late_count',
-      render: (count: number) => <Tag color="warning">{count}</Tag>,
-    },
-    {
-      title: 'Bağışlanıb',
-      dataIndex: 'excused_count',
-      key: 'excused_count',
-      render: (count: number) => <Tag color="blue">{count}</Tag>,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'is_finalized',
-      key: 'is_finalized',
-      render: (isFinalized: boolean) => (
-        <Tag color={isFinalized ? 'green' : 'orange'}>
-          {isFinalized ? 'Tamamlanıb' : 'Davam edir'}
-        </Tag>
-      ),
-    },
-    {
-      title: 'Yaradıb',
-      dataIndex: 'created_by_name',
-      key: 'created_by_name',
-    },
-    {
-      title: 'Əməliyyatlar',
-      key: 'actions',
-      fixed: 'right' as const,
-      width: 150,
-      render: (_: unknown, record: AttendanceSession) => (
-        <Space>
-          <Button
-            type="link"
-            icon={<EyeOutlined />}
-            onClick={() => handleView(record.id)}
-            size="small"
-          />
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-            size="small"
-          />
-          <Popconfirm
-            title="Sessiyonu silmək istədiyinizdən əminsiniz?"
-            onConfirm={() => handleDelete(record.id)}
-            okText="Bəli"
-            cancelText="Xeyr"
-          >
-            <Button type="link" danger icon={<DeleteOutlined />} size="small" />
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
+	const handleModalCancel = () => {
+		setModalVisible(false);
+		form.resetFields();
+		setEditingSession(null);
+	};
 
-  if (error) {
-    return (
-      <Alert
-        message="Xəta"
-        description="Davamiyyəti yükləmək mümkün olmadı"
-        type="error"
-        showIcon
-      />
-    );
-  }
+	const columns = [
+		{
+			title: "Tarix",
+			dataIndex: "date",
+			key: "date",
+			sorter: (a: AttendanceSession, b: AttendanceSession) =>
+				new Date(a.date).getTime() - new Date(b.date).getTime(),
+			render: (date: string) => dayjs(date).format("DD.MM.YYYY"),
+		},
+		{
+			title: "Ümumi",
+			dataIndex: "total_students",
+			key: "total_students",
+			render: (count: number) => <Tag>{count}</Tag>,
+		},
+		{
+			title: "İştirak",
+			dataIndex: "present_count",
+			key: "present_count",
+			render: (count: number) => <Tag color="success">{count}</Tag>,
+		},
+		{
+			title: "Qalıb",
+			dataIndex: "absent_count",
+			key: "absent_count",
+			render: (count: number) => <Tag color="error">{count}</Tag>,
+		},
+		{
+			title: "Gecikmə",
+			dataIndex: "late_count",
+			key: "late_count",
+			render: (count: number) => <Tag color="warning">{count}</Tag>,
+		},
+		{
+			title: "Bağışlanıb",
+			dataIndex: "excused_count",
+			key: "excused_count",
+			render: (count: number) => <Tag color="blue">{count}</Tag>,
+		},
+		{
+			title: "Yaradıb",
+			dataIndex: "created_by_name",
+			key: "created_by_name",
+		},
+		{
+			title: "Qeydlər",
+			dataIndex: "notes",
+			key: "notes",
+			ellipsis: true,
+			render: (notes: string | null) => notes || "-",
+		},
+		{
+			title: "Əməliyyatlar",
+			key: "actions",
+			fixed: "right" as const,
+			width: 150,
+			render: (_: unknown, record: AttendanceSession) => (
+				<Space>
+					<Button
+						type="link"
+						icon={<EyeOutlined />}
+						onClick={() => handleView(record.id)}
+						size="small"
+					/>
+					<Button
+						type="link"
+						icon={<EditOutlined />}
+						onClick={() => handleEdit(record)}
+						size="small"
+					/>
+					<Popconfirm
+						title="Sessiyonu silmək istədiyinizdən əminsiniz?"
+						onConfirm={() => handleDelete(record.id)}
+						okText="Bəli"
+						cancelText="Xeyr"
+					>
+						<Button type="link" danger icon={<DeleteOutlined />} size="small" />
+					</Popconfirm>
+				</Space>
+			),
+		},
+	];
 
-  return (
-    <div>
-      {contextHolder}
-      <div style={{ marginBottom: '16px', textAlign: 'right' }}>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
-          Yeni Sessiya
-        </Button>
-      </div>
+	if (error) {
+		return (
+			<Alert
+				message="Xəta"
+				description="Davamiyyəti yükləmək mümkün olmadı"
+				type="error"
+				showIcon
+			/>
+		);
+	}
 
-      {isLoading ? (
-        <div className={styles.loadingContainer}>
-          <Spin size="large" tip="Yüklənir..." />
-        </div>
-      ) : (
-        <Table
-          columns={columns}
-          dataSource={sessions}
-          rowKey="id"
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showTotal: (total) => `Cəmi: ${total}`,
-          }}
-          scroll={{ x: 1200 }}
-        />
-      )}
+	const tabItems = [
+		{
+			key: "list",
+			label: (
+				<span>
+					<UnorderedListOutlined />
+					Sessiyalar
+				</span>
+			),
+			children: (
+				<>
+					{isLoading ? (
+						<div className={styles.loadingContainer}>
+							<Spin size="large" tip="Yüklənir..." />
+						</div>
+					) : (
+						<Table
+							columns={columns}
+							dataSource={sessions}
+							rowKey="id"
+							pagination={{
+								pageSize: 10,
+								showSizeChanger: true,
+								showTotal: (total) => `Cəmi: ${total}`,
+							}}
+							scroll={{ x: 1200 }}
+						/>
+					)}
+				</>
+			),
+		},
+		{
+			key: "matrix",
+			label: (
+				<span>
+					<TableOutlined />
+					Matris
+				</span>
+			),
+			children: <AttendanceMatrix groupId={groupId} />,
+		},
+	];
 
-      <Modal
-        title={editingSession ? 'Sessiyani Redaktə Et' : 'Yeni Sessiya'}
-        open={modalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
-        okText="Yadda saxla"
-        cancelText="Ləğv et"
-        confirmLoading={createMutation.isPending || updateMutation.isPending}
-        width={600}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="course_group" hidden>
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item name="date" label="Tarix" rules={[{ required: true, message: 'Tarix seçin' }]}>
-            <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />
-          </Form.Item>
-          <Form.Item name="notes" label="Qeydlər">
-            <Input.TextArea rows={3} placeholder="Sessiya üçün qeydlər" />
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
-  );
+	return (
+		<div>
+			{contextHolder}
+			<div style={{ marginBottom: "16px", textAlign: "right" }}>
+				<Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
+					Yeni Sessiya
+				</Button>
+			</div>
+
+			<Tabs items={tabItems} defaultActiveKey="matrix" />
+
+			<Modal
+				title={editingSession ? "Sessiyani Redaktə Et" : "Yeni Sessiya"}
+				open={modalVisible}
+				onOk={handleModalOk}
+				onCancel={handleModalCancel}
+				okText="Yadda saxla"
+				cancelText="Ləğv et"
+				confirmLoading={createMutation.isPending || updateMutation.isPending}
+				width={600}
+			>
+				<Form form={form} layout="vertical">
+					<Form.Item name="course_group" hidden>
+						<Input type="number" />
+					</Form.Item>
+					<Form.Item
+						name="date"
+						label="Tarix"
+						rules={[{ required: true, message: "Tarix seçin" }]}
+					>
+						<DatePicker style={{ width: "100%" }} format="YYYY-MM-DD" />
+					</Form.Item>
+					<Form.Item name="notes" label="Qeydlər">
+						<Input.TextArea rows={3} placeholder="Sessiya üçün qeydlər" />
+					</Form.Item>
+				</Form>
+			</Modal>
+		</div>
+	);
 };
 
 export default GroupAttendance;

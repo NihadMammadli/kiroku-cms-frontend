@@ -347,7 +347,7 @@ const Enrollments: React.FC = () => {
             placeholder: 'Tələbə',
             value: studentFilter,
             onChange: (value) => setStudentFilter(value as number | undefined),
-            options: students?.map((s) => ({
+            options: students?.results?.map((s) => ({
               label: s.full_name,
               value: s.id,
             })),
@@ -427,7 +427,7 @@ const Enrollments: React.FC = () => {
                   showSearch
                   placeholder="Tələbə seçin"
                   optionFilterProp="label"
-                  options={students?.map((s) => ({
+                  options={students?.results?.map((s) => ({
                     label: `${s.full_name} (${s.email})`,
                     value: s.id,
                   }))}

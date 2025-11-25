@@ -131,3 +131,22 @@ export interface MyGroupsResponse {
 	role: string;
 	groups: CourseGroup[];
 }
+
+export type GroupEnrollmentStatus =
+	| "PENDING"
+	| "ACTIVE"
+	| "COMPLETED"
+	| "DROPPED"
+	| "SUSPENDED";
+
+export interface GroupEnrollment {
+	id: number;
+	student: number;
+	student_name: string;
+	status: GroupEnrollmentStatus;
+	enrollment_date: string;
+	completion_date: string | null;
+	notes: string | null;
+	created_at: string;
+	updated_at: string;
+}
