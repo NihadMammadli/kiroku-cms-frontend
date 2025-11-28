@@ -10,14 +10,14 @@ import type {
 const fetchAttendanceSessions = async (
 	params?: AttendanceSessionListParams,
 ): Promise<AttendanceSession[]> => {
-	const response = await api.get("/attendance-sessions/", { params });
-	return response.data;
+	const response = await api.get("/attendance/", { params });
+	return response.data.results || response.data;
 };
 
 const fetchAttendanceSession = async (
 	id: number,
 ): Promise<AttendanceSessionDetail> => {
-	const response = await api.get(`/attendance-sessions/${id}/`);
+	const response = await api.get(`/attendance/${id}/`);
 	return response.data;
 };
 

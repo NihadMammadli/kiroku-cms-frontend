@@ -295,7 +295,7 @@ const MyGroups: React.FC = () => {
         ) : (
           <Table
             columns={columns}
-            dataSource={filteredGroups}
+            dataSource={filteredGroups || []}
             rowKey="id"
             pagination={{
               pageSize: 10,

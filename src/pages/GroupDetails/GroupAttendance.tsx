@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
 	Modal,
 	Form,
@@ -10,15 +9,12 @@ import {
 	Space,
 	DatePicker,
 	Popconfirm,
-	Tabs,
 } from "antd";
 import {
 	PlusOutlined,
 	EditOutlined,
 	DeleteOutlined,
 	EyeOutlined,
-	TableOutlined,
-	UnorderedListOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Table, Input, Button } from "../../components/restyled";
@@ -30,7 +26,7 @@ import {
 	type AttendanceSession,
 	type AttendanceSessionCreate,
 } from "../../api";
-import AttendanceMatrix from "./AttendanceMatrix";
+import BulkUpdateModal from "./BulkUpdateModal";
 import styles from "./GroupDetails.module.css";
 
 interface GroupAttendanceProps {
@@ -38,11 +34,14 @@ interface GroupAttendanceProps {
 }
 
 const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
-	const navigate = useNavigate();
 	const [messageApi, contextHolder] = message.useMessage();
 	const [modalVisible, setModalVisible] = useState(false);
+	const [bulkModalVisible, setBulkModalVisible] = useState(false);
 	const [editingSession, setEditingSession] =
 		useState<AttendanceSession | null>(null);
+	const [selectedSessionId, setSelectedSessionId] = useState<number | null>(
+		null,
+	);
 	const [form] = Form.useForm();
 
 	// Queries and mutations
@@ -73,7 +72,8 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 	};
 
 	const handleView = (sessionId: number) => {
-		navigate(`/attendance/session/${sessionId}`);
+		setSelectedSessionId(sessionId);
+		setBulkModalVisible(true);
 	};
 
 	const handleDelete = (id: number) => {
@@ -218,49 +218,6 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 		);
 	}
 
-	const tabItems = [
-		{
-			key: "list",
-			label: (
-				<span>
-					<UnorderedListOutlined />
-					Sessiyalar
-				</span>
-			),
-			children: (
-				<>
-					{isLoading ? (
-						<div className={styles.loadingContainer}>
-							<Spin size="large" tip="Yüklənir..." />
-						</div>
-					) : (
-						<Table
-							columns={columns}
-							dataSource={sessions}
-							rowKey="id"
-							pagination={{
-								pageSize: 10,
-								showSizeChanger: true,
-								showTotal: (total) => `Cəmi: ${total}`,
-							}}
-							scroll={{ x: 1200 }}
-						/>
-					)}
-				</>
-			),
-		},
-		{
-			key: "matrix",
-			label: (
-				<span>
-					<TableOutlined />
-					Matris
-				</span>
-			),
-			children: <AttendanceMatrix groupId={groupId} />,
-		},
-	];
-
 	return (
 		<div>
 			{contextHolder}
@@ -270,7 +227,23 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 				</Button>
 			</div>
 
-			<Tabs items={tabItems} defaultActiveKey="matrix" />
+			{isLoading ? (
+				<div className={styles.loadingContainer}>
+					<Spin size="large" tip="Yüklənir..." />
+				</div>
+			) : (
+				<Table
+					columns={columns}
+					dataSource={sessions || []}
+					rowKey="id"
+					pagination={{
+						pageSize: 10,
+						showSizeChanger: true,
+						showTotal: (total) => `Cəmi: ${total}`,
+					}}
+					scroll={{ x: 1200 }}
+				/>
+			)}
 
 			<Modal
 				title={editingSession ? "Sessiyani Redaktə Et" : "Yeni Sessiya"}
@@ -298,6 +271,18 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 					</Form.Item>
 				</Form>
 			</Modal>
+
+			<BulkUpdateModal
+				sessionId={selectedSessionId}
+				visible={bulkModalVisible}
+				onCancel={() => {
+					setBulkModalVisible(false);
+					setSelectedSessionId(null);
+				}}
+				onSuccess={() => {
+					// Query invalidation handles refresh
+				}}
+			/>
 		</div>
 	);
 };

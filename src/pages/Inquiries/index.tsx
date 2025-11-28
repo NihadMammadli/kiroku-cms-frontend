@@ -373,7 +373,7 @@ const Inquiries: React.FC = () => {
         ) : (
           <Table
             columns={columns}
-            dataSource={inquiries}
+            dataSource={inquiries || []}
             rowKey="id"
             pagination={{
               pageSize: 10,

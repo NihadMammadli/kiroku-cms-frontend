@@ -263,7 +263,7 @@ const AttendancePage = () => {
 				) : (
 					<Table
 						columns={columns}
-						dataSource={sessions}
+						dataSource={sessions || []}
 						rowKey="id"
 						pagination={{
 							pageSize: 10,

@@ -12,7 +12,7 @@ import type {
 const createAttendanceSession = async (
 	data: AttendanceSessionCreate,
 ): Promise<AttendanceSession> => {
-	const response = await api.post("/attendance-sessions/", data);
+	const response = await api.post("/attendance/create/", data);
 	return response.data;
 };
 
@@ -23,7 +23,7 @@ const updateAttendanceSession = async ({
 	id: number;
 	data: AttendanceSessionUpdate;
 }): Promise<AttendanceSession> => {
-	const response = await api.put(`/attendance-sessions/${id}/`, data);
+	const response = await api.put(`/attendance/${id}/update/`, data);
 	return response.data;
 };
 
@@ -34,12 +34,12 @@ const partialUpdateAttendanceSession = async ({
 	id: number;
 	data: AttendanceSessionPartialUpdate;
 }): Promise<AttendanceSession> => {
-	const response = await api.patch(`/attendance-sessions/${id}/`, data);
+	const response = await api.patch(`/attendance/${id}/update/`, data);
 	return response.data;
 };
 
 const deleteAttendanceSession = async (id: number): Promise<void> => {
-	await api.delete(`/attendance-sessions/${id}/`);
+	await api.delete(`/attendance/${id}/delete/`);
 };
 
 const bulkUpdateAttendance = async ({
@@ -50,7 +50,7 @@ const bulkUpdateAttendance = async ({
 	data: BulkAttendanceUpdatePayload;
 }): Promise<AttendanceSession> => {
 	const response = await api.post(
-		`/attendance-sessions/${sessionId}/bulk_update/`,
+		`/attendance/${sessionId}/bulk-update/`,
 		data,
 	);
 	return response.data;
