@@ -1,0 +1,38 @@
+@import "styles/variables.css";
+@import "styles/mixins.css";
+
+.container {
+	padding: var(--spacing-lg);
+	min-height: 100vh;
+}
+
+.loadingContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 400px;
+}
+
+.content {
+	background: var(--color-surface);
+	border-radius: var(--border-radius-lg);
+	padding: var(--spacing-lg);
+	box-shadow: var(--shadow-sm);
+}
+
+.matrixContainer {
+	overflow-x: auto;
+	margin-top: var(--spacing-md);
+}
+
+.errorContainer {
+	padding: var(--spacing-lg);
+	text-align: center;
+	color: var(--color-error);
+}
+
+.tabHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}

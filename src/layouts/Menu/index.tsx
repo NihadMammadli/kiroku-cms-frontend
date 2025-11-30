@@ -14,7 +14,7 @@ import {
 } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLogoutMutation, useCurrentUserQuery } from "../../api";
+import { useLogoutMutation, useCurrentUserQuery } from "api";
 import { Loading } from "../../components";
 import {
 	canViewDashboard,

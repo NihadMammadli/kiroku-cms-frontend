@@ -17,6 +17,7 @@ import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
 	DollarOutlined,
+	EyeOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
@@ -40,6 +41,7 @@ import {
 	type Enrollment,
 	type EnrollmentCreate,
 	type EnrollmentStatus,
+	type Payment,
 } from "api";
 import styles from "./Enrollments.module.css";
 
