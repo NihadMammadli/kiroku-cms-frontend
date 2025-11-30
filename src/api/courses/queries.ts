@@ -90,7 +90,14 @@ export const useActiveUpcomingCourseGroupsQuery = (
 	})();
 };
 
+// Fetch group details for general use (students, teachers, etc.)
 const fetchCourseGroup = async (groupId: number): Promise<CourseGroup> => {
+	const response = await api.get(`/courses/groups/${groupId}/`);
+	return response.data;
+};
+
+// Fetch group details with students for teachers (from my-groups endpoint)
+const fetchMyCourseGroup = async (groupId: number): Promise<CourseGroup> => {
 	const response = await api.get(`/courses/my-groups/${groupId}/`);
 	return response.data;
 };
@@ -99,9 +106,10 @@ const fetchCourseGroupStudents = async (
 	groupId: number,
 ): Promise<GroupEnrollment[]> => {
 	const response = await api.get(`/courses/my-groups/${groupId}/`);
-	return response.data;
+	return response.data || [];
 };
 
+// General query for all users - uses public group endpoint
 export const useCourseGroupQuery = (groupId: number) => {
 	return createQuery<CourseGroup>({
 		queryKey: ["courses", "groups", groupId],
@@ -112,12 +120,26 @@ export const useCourseGroupQuery = (groupId: number) => {
 	})();
 };
 
-export const useCourseGroupStudentsQuery = (groupId: number) => {
+// Teacher-specific query - uses my-groups endpoint with student data
+export const useMyCourseGroupQuery = (groupId: number) => {
+	return createQuery<CourseGroup>({
+		queryKey: ["courses", "my-groups", groupId],
+		queryFn: () => fetchMyCourseGroup(groupId),
+		options: {
+			enabled: !!groupId,
+		},
+	})();
+};
+
+export const useCourseGroupStudentsQuery = (
+	groupId: number,
+	enabled: boolean = true,
+) => {
 	return createQuery<GroupEnrollment[]>({
 		queryKey: ["courses", "groups", groupId, "students"],
 		queryFn: () => fetchCourseGroupStudents(groupId),
 		options: {
-			enabled: !!groupId,
+			enabled: !!groupId && enabled,
 		},
 	})();
 };

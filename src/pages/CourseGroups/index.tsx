@@ -325,7 +325,7 @@ const CourseGroups: React.FC = () => {
 		return (
 			<div className={styles.container}>
 				<div className={styles.loadingContainer}>
-					<Spin size="large" tip="Yüklənir..." />
+					<Spin size="large" />
 				</div>
 			</div>
 		);
@@ -408,7 +408,7 @@ const CourseGroups: React.FC = () => {
 			<div className={styles.tableContainer}>
 				{isLoading ? (
 					<div className={styles.loadingContainer}>
-						<Spin size="large" tip="Yüklənir..." />
+						<Spin size="large" />
 					</div>
 				) : (
 					<Table

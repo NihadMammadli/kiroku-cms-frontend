@@ -4,6 +4,7 @@ import { Table } from "../../components/restyled";
 import {
 	useCourseGroupStudentsQuery,
 	useAttendanceSessionsByCourseGroupQuery,
+	useCurrentUserQuery,
 	type GroupEnrollment,
 	type AttendanceSession,
 	type AttendanceStatus,
@@ -69,11 +70,17 @@ const getStatusTooltip = (status?: AttendanceStatus): string => {
 };
 
 const AttendanceMatrix = ({ groupId }: AttendanceMatrixProps) => {
+	const { data: currentUser } = useCurrentUserQuery();
+	const isTeacher =
+		currentUser?.user_type === "TEACHER" ||
+		currentUser?.user_type === "BRANCH_ADMIN" ||
+		currentUser?.user_type === "ORGANIZATION_ADMIN";
+
 	const {
 		data: students,
 		isLoading: studentsLoading,
 		error: studentsError,
-	} = useCourseGroupStudentsQuery(groupId);
+	} = useCourseGroupStudentsQuery(groupId, isTeacher);
 
 	const {
 		data: sessions,

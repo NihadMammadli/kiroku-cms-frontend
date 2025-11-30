@@ -244,7 +244,7 @@ const Branches: React.FC = () => {
 			<div className={styles.tableContainer}>
 				{isLoading ? (
 					<div className={styles.loadingContainer}>
-						<Spin size="large" tip="Yüklənir..." />
+						<Spin size="large" />
 					</div>
 				) : (
 					<Table

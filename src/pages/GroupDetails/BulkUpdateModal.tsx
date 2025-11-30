@@ -133,7 +133,7 @@ const BulkUpdateModal: React.FC<BulkUpdateModalProps> = ({
 			cancelText="Ləğv et"
 			width={800}
 			confirmLoading={bulkUpdateMutation.isPending}
-			destroyOnClose
+			// destroyOnClose
 		>
 			{contextHolder}
 			{isLoading ? (

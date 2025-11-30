@@ -98,6 +98,34 @@ export interface BulkAttendanceUpdatePayload {
 	updates: BulkAttendanceUpdate[];
 }
 
+// Student Attendance Stats
+export interface StudentAttendanceStats {
+	course_group_id: number;
+	course_group_name: string;
+	course_name: string;
+	branch_name: string;
+	total_sessions: number;
+	present_count: number;
+	absent_count: number;
+	late_count: number;
+	excused_count: number;
+	attendance_percentage: number;
+	first_session_date: string | null;
+	last_session_date: string | null;
+}
+
+// Query params
+export interface AttendanceSessionListParams {
+	course_group?: number;
+	search?: string;
+	page?: number;
+	page_size?: number;
+}
+
+export interface StudentAttendanceStatsParams {
+	course_group?: number;
+}
+
 // Query parameters for listing attendance sessions
 export interface AttendanceSessionListParams {
 	course_group?: number; // REQUIRED in practice

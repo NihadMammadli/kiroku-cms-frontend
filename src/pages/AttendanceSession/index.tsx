@@ -183,7 +183,7 @@ const AttendanceSessionPage = () => {
 		return (
 			<div className={styles.container}>
 				<div className={styles.loadingContainer}>
-					<Spin size="large" tip="Yüklənir..." />
+					<Spin size="large" />
 				</div>
 			</div>
 		);

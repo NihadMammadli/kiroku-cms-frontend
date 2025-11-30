@@ -30,3 +30,9 @@
 	text-align: center;
 	color: var(--color-error);
 }
+
+.tabHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}

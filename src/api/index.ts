@@ -5,8 +5,10 @@ export * from "./branches";
 export * from "./courses";
 export * from "./dashboard";
 export * from "./enrollments";
+export * from "./grading";
 export * from "./inquiries";
 export * from "./organizations";
+export * from "./payments";
 export * from "./users";
 
 // Export common types

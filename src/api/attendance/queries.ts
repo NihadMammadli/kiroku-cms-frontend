@@ -4,6 +4,8 @@ import type {
 	AttendanceSession,
 	AttendanceSessionDetail,
 	AttendanceSessionListParams,
+	StudentAttendanceStats,
+	StudentAttendanceStatsParams,
 } from "./types";
 
 // API functions
@@ -45,6 +47,14 @@ export const useAttendanceSessionQuery = (id: number) => {
 	})();
 };
 
+// API functions - Student Stats
+const fetchStudentAttendanceStats = async (
+	params?: StudentAttendanceStatsParams,
+): Promise<StudentAttendanceStats[]> => {
+	const response = await api.get("/attendance/my-stats/", { params });
+	return response.data;
+};
+
 // Helper hook: fetch attendance sessions by course group
 export const useAttendanceSessionsByCourseGroupQuery = (
 	courseGroupId: number,
@@ -62,5 +72,15 @@ export const useAttendanceSessionsByCourseGroupQuery = (
 		options: {
 			enabled: !!courseGroupId,
 		},
+	})();
+};
+
+// Query hook: fetch student attendance stats
+export const useStudentAttendanceStatsQuery = (
+	params?: StudentAttendanceStatsParams,
+) => {
+	return createQuery<StudentAttendanceStats[]>({
+		queryKey: ["attendance-stats", "my-stats", JSON.stringify(params || {})],
+		queryFn: () => fetchStudentAttendanceStats(params),
 	})();
 };

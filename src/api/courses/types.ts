@@ -86,6 +86,7 @@ export interface CourseGroup {
 	is_full: boolean;
 	enrolled_count: number;
 	available_slots: number;
+	students?: GroupEnrollment[];
 	created_at: string;
 	updated_at: string;
 }

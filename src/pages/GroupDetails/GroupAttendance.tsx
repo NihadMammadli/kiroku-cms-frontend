@@ -9,12 +9,20 @@ import {
 	Space,
 	DatePicker,
 	Popconfirm,
+	Card,
+	Row,
+	Col,
+	Statistic,
 } from "antd";
 import {
 	PlusOutlined,
 	EditOutlined,
 	DeleteOutlined,
 	EyeOutlined,
+	CheckCircleOutlined,
+	CloseCircleOutlined,
+	ClockCircleOutlined,
+	ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { Table, Input, Button } from "../../components/restyled";
@@ -23,9 +31,12 @@ import {
 	useCreateAttendanceSessionMutation,
 	usePartialUpdateAttendanceSessionMutation,
 	useDeleteAttendanceSessionMutation,
+	useStudentAttendanceStatsQuery,
+	useCurrentUserQuery,
 	type AttendanceSession,
 	type AttendanceSessionCreate,
 } from "../../api";
+import { UserRoles } from "../../utils/permissions";
 import BulkUpdateModal from "./BulkUpdateModal";
 import styles from "./GroupDetails.module.css";
 
@@ -45,11 +56,27 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 	const [form] = Form.useForm();
 
 	// Queries and mutations
+	const { data: currentUser } = useCurrentUserQuery();
+	const isStudent = currentUser?.user_type === UserRoles.STUDENT;
+
+	// Teacher/Admin queries
 	const {
 		data: sessions,
 		isLoading,
 		error,
 	} = useAttendanceSessionsByCourseGroupQuery(groupId);
+
+	// Student-specific query for their attendance stats
+	const {
+		data: studentStatsArray,
+		isLoading: isLoadingStats,
+		error: statsError,
+	} = useStudentAttendanceStatsQuery({ course_group: groupId });
+
+	// Extract the stats for this specific group from the array
+	const studentStats = studentStatsArray?.find(
+		(stat) => stat.course_group_id === groupId,
+	);
 
 	const createMutation = useCreateAttendanceSessionMutation(messageApi);
 	const updateMutation = usePartialUpdateAttendanceSessionMutation(messageApi);
@@ -207,7 +234,7 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 		},
 	];
 
-	if (error) {
+	if (error || statsError) {
 		return (
 			<Alert
 				message="Xəta"
@@ -218,6 +245,94 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 		);
 	}
 
+	// Student view: show their attendance stats
+	if (isStudent) {
+		if (isLoadingStats) {
+			return (
+				<div className={styles.loadingContainer}>
+					<Spin size="large" />
+				</div>
+			);
+		}
+
+		return (
+			<div>
+				{contextHolder}
+				<Card title="Mənim Davamiyyətim">
+					<Row gutter={16}>
+						<Col xs={24} sm={12} md={6}>
+							<Card>
+								<Statistic
+									title="Ümumi Sessiyalar"
+									value={studentStats?.total_sessions || 0}
+									prefix={<CheckCircleOutlined />}
+								/>
+							</Card>
+						</Col>
+						<Col xs={24} sm={12} md={6}>
+							<Card>
+								<Statistic
+									title="İştirak"
+									value={studentStats?.present_count || 0}
+									prefix={<CheckCircleOutlined style={{ color: "#52c41a" }} />}
+									suffix={
+										<span style={{ fontSize: "14px", color: "#999" }}>
+											({studentStats?.attendance_percentage?.toFixed(1) || 0}%)
+										</span>
+									}
+								/>
+							</Card>
+						</Col>
+						<Col xs={24} sm={12} md={6}>
+							<Card>
+								<Statistic
+									title="Qalıb"
+									value={studentStats?.absent_count || 0}
+									prefix={<CloseCircleOutlined style={{ color: "#ff4d4f" }} />}
+								/>
+							</Card>
+						</Col>
+						<Col xs={24} sm={12} md={6}>
+							<Card>
+								<Statistic
+									title="Gecikmə"
+									value={studentStats?.late_count || 0}
+									prefix={<ClockCircleOutlined style={{ color: "#faad14" }} />}
+								/>
+							</Card>
+						</Col>
+						<Col xs={24} sm={12} md={6}>
+							<Card>
+								<Statistic
+									title="Bağışlanıb"
+									value={studentStats?.excused_count || 0}
+									prefix={
+										<ExclamationCircleOutlined style={{ color: "#1890ff" }} />
+									}
+								/>
+							</Card>
+						</Col>
+					</Row>
+					{studentStats?.first_session_date && (
+						<div style={{ marginTop: "24px" }}>
+							<p>
+								<strong>İlk dərs:</strong>{" "}
+								{dayjs(studentStats.first_session_date).format("DD.MM.YYYY")}
+							</p>
+							{studentStats.last_session_date && (
+								<p>
+									<strong>Son dərs:</strong>{" "}
+									{dayjs(studentStats.last_session_date).format("DD.MM.YYYY")}
+								</p>
+							)}
+						</div>
+					)}
+				</Card>
+			</div>
+		);
+	}
+
+	// Teacher/Admin view: show session management
 	return (
 		<div>
 			{contextHolder}
@@ -229,7 +344,7 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
 
 			{isLoading ? (
 				<div className={styles.loadingContainer}>
-					<Spin size="large" tip="Yüklənir..." />
+					<Spin size="large" />
 				</div>
 			) : (
 				<Table
