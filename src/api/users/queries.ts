@@ -1,7 +1,7 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import type { PaginatedResponse } from '../types';
 import type { User } from '../auth/types';
+import type { PaginatedResponse } from '../types';
 import type { UserListParams } from './types';
 
 // API functions

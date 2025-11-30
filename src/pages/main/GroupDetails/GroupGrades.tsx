@@ -1,25 +1,25 @@
-import { useState } from 'react';
+import { DeleteOutlined, EditOutlined, EyeOutlined, TrophyOutlined } from '@ant-design/icons';
 import {
-  Card,
-  Spin,
   Alert,
+  Card,
+  Descriptions,
   Empty,
-  Tag,
-  Space,
   message,
   Popconfirm,
-  Descriptions,
   Progress,
+  Space,
+  Spin,
+  Tag,
 } from 'antd';
-import { TrophyOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Table } from 'components/restyled/index.ts';
 import {
-  useGradingSyllabusByCourseGroupQuery,
-  useDeleteGradingSyllabusMutation,
-  useCurrentUserQuery,
-  useStudentGradeReportQuery,
   type GradingSyllabusDetail,
+  useCurrentUserQuery,
+  useDeleteGradingSyllabusMutation,
+  useGradingSyllabusByCourseGroupQuery,
+  useStudentGradeReportQuery,
 } from 'api/index.ts';
+import { Button, Table } from 'components/restyled/index.ts';
+import { useState } from 'react';
 import { UserRoles } from 'utils/permissions.ts';
 import GradeSectionsManager from './GradeSectionsManager.tsx';
 import styles from './GroupDetails.module.css';

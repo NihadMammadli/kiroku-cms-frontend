@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Spin, Alert, Tag, Card, Row, Col } from 'antd';
-import { BookOutlined, UserOutlined, CalendarOutlined } from '@ant-design/icons';
-import { PageHeader, FilterPanel } from 'components/custom';
-import { Table } from 'components/restyled';
+import { BookOutlined, CalendarOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, Card, Col, Row, Spin, Tag } from 'antd';
 import {
-  useMyCourseGroupsQuery,
-  useCurrentUserQuery,
   type CourseGroup,
   type CourseGroupStatus,
   type DayOfWeek,
+  useCurrentUserQuery,
+  useMyCourseGroupsQuery,
 } from 'api';
+import { FilterPanel, PageHeader } from 'components/custom';
+import { Table } from 'components/restyled';
+import type React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserRoles } from 'utils/permissions';
 import styles from './MyGroups.module.css';
 

@@ -1,7 +1,7 @@
-import React from 'react';
 import { useCurrentUserQuery } from 'api';
-import { hasAnyRole, hasAllRoles } from '../../utils/permissions';
 import type { UserType } from 'api/auth/types';
+import type React from 'react';
+import { hasAllRoles, hasAnyRole } from '../../utils/permissions';
 
 interface RoleGuardProps {
   children: React.ReactNode;

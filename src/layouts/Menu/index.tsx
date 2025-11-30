@@ -1,28 +1,29 @@
-import React, { useMemo, useState } from 'react';
-import { Drawer, Menu as AntMenu, message, Avatar, Space } from 'antd';
 import {
-  DashboardOutlined,
   BankOutlined,
   BookOutlined,
-  UserAddOutlined,
-  PhoneOutlined,
-  UserOutlined,
-  SettingOutlined,
-  LogoutOutlined,
   CloseOutlined,
+  DashboardOutlined,
+  LogoutOutlined,
+  PhoneOutlined,
+  SettingOutlined,
   TeamOutlined,
+  UserAddOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { useLogoutMutation, useCurrentUserQuery } from 'api';
+import { Menu as AntMenu, Avatar, Drawer, message, Space } from 'antd';
+import { useCurrentUserQuery, useLogoutMutation } from 'api';
+import type React from 'react';
+import { useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading } from '../../components';
 import {
-  canViewDashboard,
+  canManageUsers,
   canViewBranches,
   canViewCourses,
+  canViewDashboard,
   canViewEnrollments,
   canViewInquiries,
-  canManageUsers,
   canViewMyGroups,
   getUserRoleLabel,
 } from '../../utils/permissions';

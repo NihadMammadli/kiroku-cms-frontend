@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Select, Table, Tag, Spin, Alert, message, Input } from 'antd';
+import { Alert, Input, Modal, message, Select, Spin, Table, Tag } from 'antd';
 import {
-  useAttendanceSessionQuery,
-  useBulkUpdateAttendanceMutation,
   type AttendanceStatus,
   type BulkAttendanceUpdate,
+  useAttendanceSessionQuery,
+  useBulkUpdateAttendanceMutation,
 } from 'api';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface BulkUpdateModalProps {
   sessionId: number | null;

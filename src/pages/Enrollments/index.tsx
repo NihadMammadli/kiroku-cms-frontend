@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
-import { Modal, Form, message, Spin, Alert, Popconfirm, Tag, Space, DatePicker } from 'antd';
 import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  DeleteOutlined,
   DollarOutlined,
+  EditOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
+import { Alert, DatePicker, Form, Modal, message, Popconfirm, Space, Spin, Tag } from 'antd';
+import { FilterPanel, PageHeader } from 'components/custom';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-import { PageHeader, FilterPanel } from 'components/custom';
+import weekday from 'dayjs/plugin/weekday';
+import type React from 'react';
+import { useState } from 'react';
 
 // Configure dayjs plugins for Ant Design DatePicker
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-import { Table, Input, Select, Button } from 'components/restyled';
+
 import {
-  useEnrollmentsQuery,
-  useCreateEnrollmentMutation,
-  usePartialUpdateEnrollmentMutation,
-  useDeleteEnrollmentMutation,
-  useCompleteEnrollmentMutation,
-  useDropEnrollmentMutation,
-  useUsersQuery,
-  useActiveUpcomingCourseGroupsQuery,
-  usePaymentsByEnrollmentQuery,
   type Enrollment,
   type EnrollmentCreate,
   type EnrollmentStatus,
+  useActiveUpcomingCourseGroupsQuery,
+  useCompleteEnrollmentMutation,
+  useCreateEnrollmentMutation,
+  useDeleteEnrollmentMutation,
+  useDropEnrollmentMutation,
+  useEnrollmentsQuery,
+  usePartialUpdateEnrollmentMutation,
+  usePaymentsByEnrollmentQuery,
+  useUsersQuery,
 } from 'api';
+import { Button, Input, Select, Table } from 'components/restyled';
 import styles from './Enrollments.module.css';
 
 const Enrollments: React.FC = () => {
@@ -107,7 +109,7 @@ const Enrollments: React.FC = () => {
     setPaymentModalVisible(true);
   };
 
-  const calculatePaymentStats = (enrollmentId: number) => {
+  const _calculatePaymentStats = (enrollmentId: number) => {
     if (!enrollments) return { totalPaid: 0, paymentCount: 0 };
 
     // This is a placeholder - in a real scenario, you'd fetch payment data

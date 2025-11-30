@@ -1,6 +1,6 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
-import type { User, CSRFTokenResponse } from './types';
+import type { CSRFTokenResponse, User } from './types';
 
 // API functions
 const fetchCurrentUser = async (): Promise<User> => {

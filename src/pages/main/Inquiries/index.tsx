@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
-import { Modal, Form, message, Spin, Alert, Popconfirm, Tag, Space, DatePicker } from 'antd';
 import {
-  PlusOutlined,
-  EditOutlined,
   DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
   UserAddOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
+import { Alert, DatePicker, Form, Modal, message, Popconfirm, Space, Spin, Tag } from 'antd';
+import { FilterPanel, PageHeader } from 'components/custom';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-import { PageHeader, FilterPanel } from 'components/custom';
+import weekday from 'dayjs/plugin/weekday';
+import type React from 'react';
+import { useState } from 'react';
 
 // Configure dayjs plugins for Ant Design DatePicker
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-import { Table, Input, Select, Button } from 'components/restyled';
+
 import {
-  useInquiriesQuery,
-  useCreateInquiryMutation,
-  usePartialUpdateInquiryMutation,
-  useDeleteInquiryMutation,
-  useConvertInquiryMutation,
-  useAssignInquiryMutation,
-  useBranchesQuery,
   type Inquiry,
   type InquiryCreate,
-  type InquiryStatus,
   type InquirySource,
+  type InquiryStatus,
+  useAssignInquiryMutation,
+  useBranchesQuery,
+  useConvertInquiryMutation,
+  useCreateInquiryMutation,
+  useDeleteInquiryMutation,
+  useInquiriesQuery,
+  usePartialUpdateInquiryMutation,
 } from 'api';
+import { Button, Input, Select, Table } from 'components/restyled';
 import styles from './Inquiries.module.css';
 
 const Inquiries: React.FC = () => {

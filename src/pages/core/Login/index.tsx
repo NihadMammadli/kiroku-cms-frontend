@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Card, Form, message } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate, Link } from 'react-router-dom';
-import { useLoginMutation, useCurrentUserQuery, type LoginRequest } from 'api/auth';
+import { type LoginRequest, useCurrentUserQuery, useLoginMutation } from 'api/auth';
 import { Button, Input } from 'components';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserRoles } from 'utils/permissions';
 import styles from './Login.module.css';
 

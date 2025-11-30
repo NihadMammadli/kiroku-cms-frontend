@@ -1,20 +1,20 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Layout from 'layouts/index';
 import { ProtectedRoute } from 'components';
+import Layout from 'layouts/index';
+import Dashboard from 'pages/core/Dashboard';
 import Landing from 'pages/core/Landing';
 import Login from 'pages/core/Login';
-import ResetPassword from 'pages/core/ResetPassword';
-import Dashboard from 'pages/core/Dashboard';
-import Branches from 'pages/main/Branches';
-import Courses from 'pages/main/Courses';
-import CourseGroups from 'pages/main/CourseGroups';
-import MyGroups from 'pages/main/MyGroups';
-import GroupDetails from 'pages/main/GroupDetails';
-import Enrollments from 'pages/main/Enrollments';
-import Inquiries from 'pages/main/Inquiries';
-import Users from 'pages/main/Users';
 import Profile from 'pages/core/Profile';
+import ResetPassword from 'pages/core/ResetPassword';
+import Branches from 'pages/main/Branches';
+import CourseGroups from 'pages/main/CourseGroups';
+import Courses from 'pages/main/Courses';
+import Enrollments from 'pages/main/Enrollments';
+import GroupDetails from 'pages/main/GroupDetails';
+import Inquiries from 'pages/main/Inquiries';
+import MyGroups from 'pages/main/MyGroups';
+import Users from 'pages/main/Users';
+import type React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { UserRoles } from 'utils/permissions';
 
 const AppRoutes: React.FC = () => {

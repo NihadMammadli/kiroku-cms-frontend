@@ -2,9 +2,9 @@ import { createQuery } from '../../config';
 import api from '../../config/api';
 import type {
   Organization,
+  OrganizationBranch,
   OrganizationListParams,
   OrganizationStatistics,
-  OrganizationBranch,
 } from './types';
 
 // API functions

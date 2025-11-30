@@ -1,7 +1,7 @@
-import React from 'react';
-import { Checkbox as AntCheckbox } from 'antd';
 import type { CheckboxProps as AntCheckboxProps } from 'antd';
+import { Checkbox as AntCheckbox } from 'antd';
 import type { CheckboxGroupProps as AntCheckboxGroupProps } from 'antd/es/checkbox';
+import type React from 'react';
 import styles from './Checkbox.module.css';
 
 export type CheckboxProps = AntCheckboxProps;

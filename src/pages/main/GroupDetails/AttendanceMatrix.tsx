@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
 import { Tag, Tooltip } from 'antd';
-import { Table } from 'components/restyled';
 import {
-  useCourseGroupStudentsQuery,
-  useAttendanceSessionsByCourseGroupQuery,
-  useCurrentUserQuery,
-  type GroupEnrollment,
   type AttendanceSession,
   type AttendanceStatus,
+  type GroupEnrollment,
+  useAttendanceSessionsByCourseGroupQuery,
+  useCourseGroupStudentsQuery,
+  useCurrentUserQuery,
 } from 'api';
+import { Table } from 'components/restyled';
 import dayjs from 'dayjs';
+import { useMemo } from 'react';
 import styles from './GroupDetails.module.css';
 
 interface AttendanceMatrixProps {

@@ -5,10 +5,10 @@ import type {
   LoginResponse,
   MessageResponse,
   PasswordChangeRequest,
-  PasswordResetRequest,
   PasswordResetConfirm,
-  TokenVerify,
+  PasswordResetRequest,
   ProfileUpdateRequest,
+  TokenVerify,
   User,
 } from './types';
 

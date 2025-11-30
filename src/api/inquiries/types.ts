@@ -96,7 +96,4 @@ export interface InquiryAssignRequest {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InquiryConvertRequest {
-  // Data needed to convert inquiry to student
-  // May include additional enrollment details
-}
+export type InquiryConvertRequest = {};

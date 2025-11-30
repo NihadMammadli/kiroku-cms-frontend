@@ -9,10 +9,9 @@ export * from './grading';
 export * from './inquiries';
 export * from './organizations';
 export * from './payments';
-export * from './users';
-
 // Export common types
 export * from './types';
+export * from './users';
 
 // Note: './login' module is deprecated in favor of './auth'
 // Keeping it in the folder for backwards compatibility but not exporting to avoid conflicts

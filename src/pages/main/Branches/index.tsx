@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { Modal, Form, message, Spin, Alert, Popconfirm, Tag, Space } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { PageHeader, FilterPanel } from 'components/custom';
-import { Table, Input, Button } from 'components/restyled';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Alert, Form, Modal, message, Popconfirm, Space, Spin, Tag } from 'antd';
 import {
-  useBranchesQuery,
-  useCreateBranchMutation,
-  useUpdateBranchMutation,
-  useDeleteBranchMutation,
-  useCurrentUserQuery,
   type Branch,
   type BranchCreate,
+  useBranchesQuery,
+  useCreateBranchMutation,
+  useCurrentUserQuery,
+  useDeleteBranchMutation,
+  useUpdateBranchMutation,
 } from 'api';
-import { canCreateBranches, canUpdateBranches, canDeleteBranches } from 'utils/permissions';
+import { FilterPanel, PageHeader } from 'components/custom';
+import { Button, Input, Table } from 'components/restyled';
+import type React from 'react';
+import { useState } from 'react';
+import { canCreateBranches, canDeleteBranches, canUpdateBranches } from 'utils/permissions';
 import styles from './Branches.module.css';
 
 const Branches: React.FC = () => {

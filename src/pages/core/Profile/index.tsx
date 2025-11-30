@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
+import { EditOutlined, LockOutlined, SaveOutlined, UserOutlined } from '@ant-design/icons';
 import {
-  Card,
-  Spin,
   Alert,
-  Tag,
-  Row,
-  Col,
   Avatar,
   Button,
+  Card,
+  Col,
+  DatePicker,
   Form,
   Input,
-  DatePicker,
-  message,
   Modal,
+  message,
+  Row,
+  Spin,
+  Tag,
 } from 'antd';
-import { UserOutlined, EditOutlined, SaveOutlined, LockOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
+import type React from 'react';
+import { useState } from 'react';
 
 // Configure dayjs plugins for Ant Design DatePicker
 dayjs.extend(weekday);
 dayjs.extend(localeData);
+
+import type { PasswordChangeRequest, ProfileUpdateRequest, UserType } from 'api';
 import {
-  useCurrentUserQuery,
-  useUpdateProfileMutation,
-  useChangePasswordMutation,
   useBranchesQuery,
+  useChangePasswordMutation,
+  useCurrentUserQuery,
   useOrganizationQuery,
+  useUpdateProfileMutation,
 } from 'api';
-import type { UserType, ProfileUpdateRequest, PasswordChangeRequest } from 'api';
 import styles from './Profile.module.css';
 
 const Profile: React.FC = () => {

@@ -1,49 +1,51 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Modal,
-  Form,
-  message,
-  Spin,
-  Alert,
-  Popconfirm,
-  Tag,
-  Space,
-  DatePicker,
-  TimePicker,
-  Button as AntButton,
-} from 'antd';
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
   ArrowLeftOutlined,
+  DeleteOutlined,
+  EditOutlined,
   MinusCircleOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
+import {
+  Alert,
+  Button as AntButton,
+  DatePicker,
+  Form,
+  Modal,
+  message,
+  Popconfirm,
+  Space,
+  Spin,
+  Tag,
+  TimePicker,
+} from 'antd';
+import { FilterPanel, PageHeader } from 'components/custom';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-import { PageHeader, FilterPanel } from 'components/custom';
+import weekday from 'dayjs/plugin/weekday';
+import type React from 'react';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Configure dayjs plugins for Ant Design DatePicker
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-import { Table, Input, Select, Button } from 'components/restyled';
+
 import {
+  type CourseGroup,
+  type CourseGroupCreate,
+  type CourseGroupSchedule,
+  type CourseGroupStatus,
+  type DayOfWeek,
+  useBranchesQuery,
   useCourseGroupsByCourseQuery,
   useCourseQuery,
   useCreateCourseGroupMutation,
-  useUpdateCourseGroupMutation,
-  useDeleteCourseGroupMutation,
-  useUsersQuery,
   useCurrentUserQuery,
-  useBranchesQuery,
-  type CourseGroup,
-  type CourseGroupCreate,
-  type CourseGroupStatus,
-  type DayOfWeek,
-  type CourseGroupSchedule,
+  useDeleteCourseGroupMutation,
+  useUpdateCourseGroupMutation,
+  useUsersQuery,
 } from 'api';
+import { Button, Input, Select, Table } from 'components/restyled';
 import { canManageCourseGroups } from 'utils/permissions';
 import styles from './CourseGroups.module.css';
 

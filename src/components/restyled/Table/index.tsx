@@ -1,5 +1,5 @@
-import { Table as AntTable } from 'antd';
 import type { TableProps as AntTableProps } from 'antd';
+import { Table as AntTable } from 'antd';
 import styles from './Table.module.css';
 
 export type TableProps<T = object> = AntTableProps<T>;

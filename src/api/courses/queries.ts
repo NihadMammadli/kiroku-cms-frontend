@@ -3,11 +3,11 @@ import api from '../../config/api';
 import type { PaginatedResponse } from '../types';
 import type {
   Course,
-  CourseListParams,
   CourseGroup,
   CourseGroupListParams,
-  MyGroupsResponse,
+  CourseListParams,
   GroupEnrollment,
+  MyGroupsResponse,
 } from './types';
 
 // API functions

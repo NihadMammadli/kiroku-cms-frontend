@@ -2,10 +2,10 @@ import { createMutation } from '../../config';
 import api from '../../config/api';
 import type {
   Inquiry,
-  InquiryCreate,
-  InquiryUpdate,
   InquiryAssignRequest,
   InquiryConvertRequest,
+  InquiryCreate,
+  InquiryUpdate,
 } from './types';
 
 // API functions

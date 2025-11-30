@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Layout, Button, Dropdown, Avatar, Space, message } from 'antd';
-import type { MenuProps } from 'antd';
-import { MenuOutlined, UserOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { DownOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
+import type { MenuProps } from 'antd';
+import { Avatar, Button, Dropdown, Layout, message, Space } from 'antd';
 import { useCurrentUserQuery, useLogoutMutation } from 'api';
+import type React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loading } from '../../components';
 import styles from './Header.module.css';
 

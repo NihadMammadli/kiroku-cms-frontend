@@ -1,11 +1,11 @@
 import { createMutation } from '../../config';
 import api from '../../config/api';
 import type {
-  GradingSyllabusDetail,
+  BulkGradeInput,
   GradingSyllabusCreate,
+  GradingSyllabusDetail,
   GradingSyllabusUpdate,
   StudentGrade,
-  BulkGradeInput,
 } from './types';
 
 // API functions

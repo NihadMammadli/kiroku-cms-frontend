@@ -1,39 +1,39 @@
-import { useState } from 'react';
 import {
-  Card,
-  Empty,
-  Tag,
-  Space,
-  Spin,
+  BookOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  TrophyOutlined,
+} from '@ant-design/icons';
+import {
   Alert,
-  Modal,
+  Card,
+  Col,
+  Empty,
   Form,
   Input,
   InputNumber,
-  Switch,
+  Modal,
   message,
   Row,
-  Col,
-  Table,
+  Space,
+  Spin,
   Statistic,
+  Switch,
+  Table,
+  Tag,
 } from 'antd';
 import {
-  BookOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  TrophyOutlined,
-} from '@ant-design/icons';
-import { Button } from 'components/restyled';
-import {
-  useGradingSyllabusByCourseGroupQuery,
-  useGradingSectionsQuery,
-  useCreateGradingSyllabusMutation,
-  useUpdateGradingSyllabusMutation,
-  useCurrentUserQuery,
-  type GradingSectionInput,
   type GradingSection,
+  type GradingSectionInput,
+  useCreateGradingSyllabusMutation,
+  useCurrentUserQuery,
+  useGradingSectionsQuery,
+  useGradingSyllabusByCourseGroupQuery,
+  useUpdateGradingSyllabusMutation,
 } from 'api';
+import { Button } from 'components/restyled';
+import { useState } from 'react';
 import styles from './GroupDetails.module.css';
 
 interface GroupSyllabusProps {

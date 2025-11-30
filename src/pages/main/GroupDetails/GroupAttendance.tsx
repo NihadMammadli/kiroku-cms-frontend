@@ -1,41 +1,41 @@
-import { useState } from 'react';
 import {
-  Modal,
-  Form,
-  message,
-  Spin,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  EyeOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
+import {
   Alert,
-  Tag,
-  Space,
-  DatePicker,
-  Popconfirm,
   Card,
-  Row,
   Col,
+  DatePicker,
+  Form,
+  Modal,
+  message,
+  Popconfirm,
+  Row,
+  Space,
+  Spin,
   Statistic,
+  Tag,
 } from 'antd';
 import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ClockCircleOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
-import dayjs from 'dayjs';
-import { Table, Input, Button } from 'components/restyled';
-import {
-  useAttendanceSessionsByCourseGroupQuery,
-  useCreateAttendanceSessionMutation,
-  usePartialUpdateAttendanceSessionMutation,
-  useDeleteAttendanceSessionMutation,
-  useStudentAttendanceStatsQuery,
-  useCurrentUserQuery,
   type AttendanceSession,
   type AttendanceSessionCreate,
+  useAttendanceSessionsByCourseGroupQuery,
+  useCreateAttendanceSessionMutation,
+  useCurrentUserQuery,
+  useDeleteAttendanceSessionMutation,
+  usePartialUpdateAttendanceSessionMutation,
+  useStudentAttendanceStatsQuery,
 } from 'api';
+import { Button, Input, Table } from 'components/restyled';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 import { UserRoles } from 'utils/permissions';
 import BulkUpdateModal from './BulkUpdateModal';
 import styles from './GroupDetails.module.css';

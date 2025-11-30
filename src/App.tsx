@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import AppRoutes from './AppRoutes';
 
 const App: React.FC = () => {

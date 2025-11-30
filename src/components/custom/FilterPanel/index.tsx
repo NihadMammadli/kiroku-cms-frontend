@@ -1,6 +1,6 @@
-import React from 'react';
-import { Input, Select } from '../../restyled';
 import type { DefaultOptionType } from 'antd/es/select';
+import type React from 'react';
+import { Input, Select } from '../../restyled';
 import styles from './FilterPanel.module.css';
 
 interface FilterItem {

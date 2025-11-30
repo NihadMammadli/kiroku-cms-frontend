@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import { Modal, Form, message, Spin, Alert, Popconfirm, Tag, Space, DatePicker } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { Alert, DatePicker, Form, Modal, message, Popconfirm, Space, Spin, Tag } from 'antd';
+import { FilterPanel, PageHeader } from 'components/custom';
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-import { PageHeader, FilterPanel } from 'components/custom';
+import weekday from 'dayjs/plugin/weekday';
+import type React from 'react';
+import { useState } from 'react';
 
 // Configure dayjs plugins for Ant Design DatePicker
 dayjs.extend(weekday);
 dayjs.extend(localeData);
-import { Table, Input, Select, Button, Checkbox } from 'components/restyled';
+
 import {
-  useUsersQuery,
-  useCreateUserMutation,
-  usePartialUpdateUserMutation,
-  useDeleteUserMutation,
-  useBranchesQuery,
   type User,
   type UserCreate,
   type UserType,
+  useBranchesQuery,
+  useCreateUserMutation,
+  useDeleteUserMutation,
+  usePartialUpdateUserMutation,
+  useUsersQuery,
 } from 'api';
+import { Button, Checkbox, Input, Select, Table } from 'components/restyled';
 import styles from './Users.module.css';
 
 const Users: React.FC = () => {

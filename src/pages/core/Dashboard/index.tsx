@@ -1,10 +1,10 @@
-import React from 'react';
-import { Card, Row, Col, Spin, Alert, Statistic } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { ShopOutlined, TeamOutlined, BookOutlined, UserOutlined } from '@ant-design/icons';
-import { useCurrentUserQuery } from 'api/auth';
+import { BookOutlined, ShopOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, Card, Col, Row, Spin, Statistic } from 'antd';
 import { useOrganizationQuery, useOrganizationStatisticsQuery } from 'api';
+import { useCurrentUserQuery } from 'api/auth';
 import { Button } from 'components';
+import type React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { canManageOrganization } from 'utils/permissions';
 import styles from './Dashboard.module.css';
 

@@ -1,17 +1,17 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { Tabs, Spin, Alert, Card } from 'antd';
 import {
   ArrowLeftOutlined,
-  CheckSquareOutlined,
   BookOutlined,
+  CheckSquareOutlined,
   TrophyOutlined,
 } from '@ant-design/icons';
-import { PageHeader } from 'components/custom/index.ts';
+import { Alert, Card, Spin, Tabs } from 'antd';
 import { useMyCourseGroupsQuery } from 'api/index.ts';
+import { PageHeader } from 'components/custom/index.ts';
+import { useNavigate, useParams } from 'react-router-dom';
 import GroupAttendance from './GroupAttendance.tsx';
-import GroupSyllabus from './GroupSyllabus.tsx';
-import GroupGrades from './GroupGrades.tsx';
 import styles from './GroupDetails.module.css';
+import GroupGrades from './GroupGrades.tsx';
+import GroupSyllabus from './GroupSyllabus.tsx';
 
 const GroupDetails: React.FC = () => {
   const { groupId } = useParams<{ groupId: string }>();

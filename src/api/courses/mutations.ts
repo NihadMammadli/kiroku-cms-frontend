@@ -3,10 +3,10 @@ import api from '../../config/api';
 import type {
   Course,
   CourseCreate,
-  CourseUpdate,
   CourseGroup,
   CourseGroupCreate,
   CourseGroupUpdate,
+  CourseUpdate,
 } from './types';
 
 // API functions

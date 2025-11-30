@@ -1,11 +1,11 @@
 import { createQuery } from '../../config';
 import api from '../../config/api';
 import type {
+  GradingSection,
+  GradingSectionListParams,
   GradingSyllabus,
   GradingSyllabusDetail,
   GradingSyllabusListParams,
-  GradingSection,
-  GradingSectionListParams,
   StudentGrade,
   StudentGradeListParams,
   StudentGradeReport,

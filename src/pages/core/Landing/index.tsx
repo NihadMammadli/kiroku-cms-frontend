@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
+  ArrowRightOutlined,
   BankOutlined,
-  TeamOutlined,
+  BarChartOutlined,
   BookOutlined,
   CalendarOutlined,
-  MessageOutlined,
-  BarChartOutlined,
+  CheckOutlined,
   CrownOutlined,
   IdcardOutlined,
-  UserOutlined,
+  MessageOutlined,
   StarOutlined,
-  ArrowRightOutlined,
-  CheckOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Landing.module.css';
 
 const Landing: React.FC = () => {

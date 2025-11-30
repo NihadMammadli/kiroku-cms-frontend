@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button as AntButton } from 'antd';
 import type { ButtonProps as AntButtonProps } from 'antd';
+import { Button as AntButton } from 'antd';
+import type React from 'react';
 import styles from './Button.module.css';
 
 export interface ButtonProps extends AntButtonProps {

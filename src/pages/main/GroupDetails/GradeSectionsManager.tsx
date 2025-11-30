@@ -1,38 +1,38 @@
-import { useState } from 'react';
-import {
-  Card,
-  Tabs,
-  Spin,
-  Alert,
-  Tag,
-  Space,
-  Modal,
-  InputNumber,
-  message,
-  Row,
-  Col,
-  Statistic,
-  Progress,
-  Empty,
-} from 'antd';
 import {
   ArrowLeftOutlined,
-  TrophyOutlined,
-  EditOutlined,
   BarChartOutlined,
+  EditOutlined,
+  TrophyOutlined,
 } from '@ant-design/icons';
-import { Button, Table, Input } from 'components/restyled';
 import {
-  useGradingSyllabusQuery,
-  useStudentGradesQuery,
-  useBulkGradeStudentsMutation,
-  useCourseGroupStudentsQuery,
-  useStudentGradeReportQuery,
-  useCurrentUserQuery,
+  Alert,
+  Card,
+  Col,
+  Empty,
+  InputNumber,
+  Modal,
+  message,
+  Progress,
+  Row,
+  Space,
+  Spin,
+  Statistic,
+  Tabs,
+  Tag,
+} from 'antd';
+import {
+  type GradingSection,
   type StudentGrade,
   type StudentGradeInput,
-  type GradingSection,
+  useBulkGradeStudentsMutation,
+  useCourseGroupStudentsQuery,
+  useCurrentUserQuery,
+  useGradingSyllabusQuery,
+  useStudentGradeReportQuery,
+  useStudentGradesQuery,
 } from 'api';
+import { Button, Input, Table } from 'components/restyled';
+import { useState } from 'react';
 import styles from './GroupDetails.module.css';
 
 interface GradeSectionsManagerProps {

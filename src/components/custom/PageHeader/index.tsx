@@ -1,6 +1,6 @@
+import type { ButtonProps } from 'antd';
 import React from 'react';
 import { Button } from '../../restyled';
-import type { ButtonProps } from 'antd';
 import styles from './PageHeader.module.css';
 
 interface PageHeaderProps {

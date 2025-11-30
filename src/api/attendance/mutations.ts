@@ -3,8 +3,8 @@ import api from '../../config/api';
 import type {
   AttendanceSession,
   AttendanceSessionCreate,
-  AttendanceSessionUpdate,
   AttendanceSessionPartialUpdate,
+  AttendanceSessionUpdate,
   BulkAttendanceUpdatePayload,
 } from './types';
 

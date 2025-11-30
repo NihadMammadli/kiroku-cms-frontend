@@ -1,7 +1,7 @@
-import React from 'react';
-import { Input as AntInput } from 'antd';
 import type { InputProps as AntInputProps } from 'antd';
+import { Input as AntInput } from 'antd';
 import type { TextAreaProps as AntTextAreaProps } from 'antd/es/input';
+import type React from 'react';
 import styles from './Input.module.css';
 
 export type InputProps = AntInputProps;

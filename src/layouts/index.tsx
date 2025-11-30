@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
 import { Layout as AntLayout } from 'antd';
+import type React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from './Header';
-import Menu from './Menu';
 import Content from './Content';
 import Footer from './Footer';
+import Header from './Header';
 import styles from './Layout.module.css';
+import Menu from './Menu';
 
 interface LayoutProps {
   children: React.ReactNode;

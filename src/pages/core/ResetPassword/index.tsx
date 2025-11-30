@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Card, Form, message, Result, Spin } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import {
+  useConfirmPasswordResetMutation,
   useRequestPasswordResetMutation,
   useVerifyPasswordResetTokenMutation,
-  useConfirmPasswordResetMutation,
 } from 'api';
 import { Button, Input } from 'components';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import styles from './ResetPassword.module.css';
 
 const ResetPassword: React.FC = () => {
