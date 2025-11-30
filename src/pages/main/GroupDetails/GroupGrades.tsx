@@ -43,7 +43,7 @@ const GroupGrades = ({ groupId }: GroupGradesProps) => {
     data: gradeReport,
     isLoading: isLoadingReport,
     error: reportError,
-  } = useStudentGradeReportQuery({ course_group: groupId });
+  } = useStudentGradeReportQuery({ course_group: groupId }, { enabled: isStudent });
 
   // Mutations
   const deleteMutation = useDeleteGradingSyllabusMutation(messageApi);

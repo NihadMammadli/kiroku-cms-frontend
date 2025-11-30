@@ -57,14 +57,25 @@ const GroupAttendance = ({ groupId }: GroupAttendanceProps) => {
   const isStudent = currentUser?.user_type === UserRoles.STUDENT;
 
   // Teacher/Admin queries
-  const { data: sessions, isLoading, error } = useAttendanceSessionsByCourseGroupQuery(groupId);
+  const {
+    data: sessions,
+    isLoading,
+    error,
+  } = useAttendanceSessionsByCourseGroupQuery(groupId, {
+    enabled: !isStudent,
+  });
 
   // Student-specific query for their attendance stats
   const {
     data: studentStatsArray,
     isLoading: isLoadingStats,
     error: statsError,
-  } = useStudentAttendanceStatsQuery({ course_group: groupId });
+  } = useStudentAttendanceStatsQuery(
+    { course_group: groupId },
+    {
+      enabled: isStudent,
+    }
+  );
 
   // Extract the stats for this specific group from the array
   const studentStats = studentStatsArray?.find((stat) => stat.course_group_id === groupId);

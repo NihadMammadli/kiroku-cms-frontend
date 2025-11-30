@@ -1,5 +1,7 @@
 .container {
-  padding: 24px;
+  padding: 32px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  min-height: 100vh;
 }
 
 .loadingContainer {
@@ -14,72 +16,364 @@
 }
 
 .header {
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-bottom: 32px;
 }
 
 .title {
   margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.welcomeCard {
-  margin-bottom: 24px;
-}
-
-.userInfoRow {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.userInfoItem {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.userInfoLabel {
-  font-weight: 600;
-  color: #666;
-}
-
-.userInfoValue {
-  color: #333;
-}
-
-.statusActive {
-  color: #52c41a;
-}
-
-.statusInactive {
-  color: #ff4d4f;
-}
-
-.emailExtra {
-  color: #666;
-}
-
-.organizationCard {
-  margin-bottom: 24px;
-}
-
-.orgInfoItem {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
-}
-
-.orgInfoLabel {
-  font-weight: 600;
-  color: #666;
-  font-size: 14px;
-}
-
-.orgInfoValue {
-  color: #333;
+.subtitle {
+  margin: 8px 0 0 0;
+  color: #8c8c8c;
   font-size: 16px;
+}
+
+/* Welcome Card Styles */
+.welcomeCard {
+  margin-bottom: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden;
+}
+
+.welcomeContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.avatar {
+  background: rgba(255, 255, 255, 0.3);
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.welcomeText {
+  flex: 1;
+}
+
+.welcomeTitle {
+  margin: 0 0 12px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.infoTag {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.userMetadata {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.metadataItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.metadataLabel {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.roleTag,
+.statusTag {
+  font-size: 14px;
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Statistics Section */
+.statisticsSection {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #262626;
+}
+
+.statCard {
+  border-radius: 16px;
+  padding: 24px;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+.statCardBranches {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.statCardStudents {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.statCardTeachers {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.statCardCourses {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.statIcon {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 16px;
+}
+
+.statistic :global(.ant-statistic-title) {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.statistic :global(.ant-statistic-content) {
+  color: #fff;
+}
+
+/* Organization Card */
+.organizationCard {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 32px;
+}
+
+.cardTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.cardTitleIcon {
+  font-size: 24px;
+  color: #667eea;
+}
+
+.orgHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.orgName {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #262626;
+}
+
+.codeTag {
+  font-size: 14px;
+  padding: 4px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.orgDescription {
+  font-size: 16px;
+  color: #595959;
+  line-height: 1.6;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.contactItem {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+  background: #f0f0f0;
+  transform: translateX(4px);
+}
+
+.contactIcon {
+  font-size: 24px;
+  color: #667eea;
+  margin-top: 4px;
+}
+
+.contactLabel {
+  font-size: 12px;
+  color: #8c8c8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.contactValue {
+  font-size: 16px;
+  color: #262626;
+  font-weight: 500;
+}
+
+.contactLink {
+  font-size: 16px;
+  color: #667eea;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contactLink:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.locationIcon {
+  font-size: 20px;
+  color: #667eea;
+}
+
+.orgStats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  border-radius: 12px;
+}
+
+.orgStatItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.orgStatIcon {
+  font-size: 32px;
+  color: #667eea;
+}
+
+.orgStatValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #262626;
+  margin-bottom: 4px;
+}
+
+.orgStatLabel {
+  font-size: 13px;
+  color: #8c8c8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .welcomeContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .userMetadata {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .orgHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orgStats {
+    flex-direction: column;
+  }
+
+  .orgStatItem {
+    width: 100%;
+  }
 }
 

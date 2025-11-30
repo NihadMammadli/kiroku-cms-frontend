@@ -109,12 +109,15 @@ export const useStudentGradesQuery = (sectionId: number, params?: StudentGradeLi
   })();
 };
 
-export const useStudentGradeReportQuery = (params: StudentGradeReportParams) => {
+export const useStudentGradeReportQuery = (
+  params: StudentGradeReportParams,
+  options?: { enabled?: boolean }
+) => {
   return createQuery<StudentGradeReport>({
     queryKey: ['student-grades', 'report', JSON.stringify(params)],
     queryFn: () => fetchStudentGradeReport(params),
     options: {
-      enabled: !!params.course_group,
+      enabled: !!params.course_group && options?.enabled !== false,
     },
   })();
 };

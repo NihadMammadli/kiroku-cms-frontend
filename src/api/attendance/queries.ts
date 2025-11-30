@@ -54,21 +54,24 @@ const fetchStudentAttendanceStats = async (
 // Helper hook: fetch attendance sessions by course group
 export const useAttendanceSessionsByCourseGroupQuery = (
   courseGroupId: number,
-  params?: Omit<AttendanceSessionListParams, 'course_group'>
+  params?: Omit<AttendanceSessionListParams, 'course_group'>,
+  options?: { enabled?: boolean }
 ) => {
   return createQuery<AttendanceSession[]>({
     queryKey: ['attendance-sessions', 'by-course-group', courseGroupId, JSON.stringify(params)],
     queryFn: () => fetchAttendanceSessions({ ...params, course_group: courseGroupId }),
     options: {
       enabled: !!courseGroupId,
+      ...options,
     },
   })();
 };
 
 // Query hook: fetch student attendance stats
-export const useStudentAttendanceStatsQuery = (params?: StudentAttendanceStatsParams) => {
+export const useStudentAttendanceStatsQuery = (params?: StudentAttendanceStatsParams, options?: { enabled?: boolean }) => {
   return createQuery<StudentAttendanceStats[]>({
     queryKey: ['attendance-stats', 'my-stats', JSON.stringify(params || {})],
     queryFn: () => fetchStudentAttendanceStats(params),
+    options,
   })();
 };
